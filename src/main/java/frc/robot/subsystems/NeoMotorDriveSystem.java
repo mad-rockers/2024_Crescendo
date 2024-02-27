@@ -6,6 +6,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.lang.Math;
 
 public class NeoMotorDriveSystem extends SubsystemBase 
 {
@@ -81,18 +82,28 @@ public class NeoMotorDriveSystem extends SubsystemBase
     
   }
 
+  public double applyDeadBand(double inp)
+  {
+    if(Math.abs(inp)>(0.1)){ // Control deadband here
+      return inp;
+    }
+    return 0.0;
+  }
+
+  public double dampenSpeed(double inp){
+    return(Math.abs(inp)*inp*0.5); // Control speeddampener here
+  }
 
   ///METHODS///
-  //TODO: Inputs Curves, Deadzones
   public void driveArcade(double speed, double rotation)
   {
-    m_drive.arcadeDrive(speed, rotation);
+    m_drive.arcadeDrive(dampenSpeed(applyDeadBand(speed)), dampenSpeed(applyDeadBand(rotation)));
   }
 
 
   public void driveTank(double speedLeft, double speedRight)
   {
-    m_drive.tankDrive(speedLeft, speedRight);
+    m_drive.tankDrive(dampenSpeed(applyDeadBand(speedLeft)), dampenSpeed(applyDeadBand(speedRight)));
   }
 
 
