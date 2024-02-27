@@ -82,7 +82,7 @@ public class NeoMotorDriveSystem extends SubsystemBase
     
   }
 
-  public double deadBand(double inp)
+  public double applyDeadBand(double inp)
   {
     if(Math.abs(inp)>(0.1)){ // Control deadband here
       return inp;
@@ -90,21 +90,20 @@ public class NeoMotorDriveSystem extends SubsystemBase
     return 0.0;
   }
 
-  public double speedDampener(double inp){
+  public double dampenSpeed(double inp){
     return(Math.abs(inp)*inp*0.5); // Control speeddampener here
   }
 
   ///METHODS///
-  //TODO: Inputs Curves, Deadzones
   public void driveArcade(double speed, double rotation)
   {
-    m_drive.arcadeDrive(speedDampener(deadBand(speed)), speedDampener(deadBand(rotation)));
+    m_drive.arcadeDrive(dampenSpeed(applyDeadBand(speed)), dampenSpeed(applyDeadBand(rotation)));
   }
 
 
   public void driveTank(double speedLeft, double speedRight)
   {
-    m_drive.tankDrive(speedDampener(deadBand(speedLeft)), speedDampener(deadBand(speedRight)));
+    m_drive.tankDrive(dampenSpeed(applyDeadBand(speedLeft)), dampenSpeed(applyDeadBand(speedRight)));
   }
 
 
