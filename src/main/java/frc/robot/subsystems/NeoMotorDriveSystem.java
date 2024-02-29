@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,11 +32,17 @@ public class NeoMotorDriveSystem extends SubsystemBase
   private CANSparkMax m_backLeftMotor;
   private CANSparkMax m_backRightMotor;  
 
+  //Encoders
   private final RelativeEncoder m_frontLeftEncoder;
   private final RelativeEncoder m_frontRightEncoder;
   private final RelativeEncoder m_backLeftEncoder;
   private final RelativeEncoder m_backRightEncoder;
 
+  // PID Controllers
+  private final SparkPIDController m_frontLeftPID;
+  private final SparkPIDController m_frontRightPID;
+  private final SparkPIDController m_backLeftPID;
+  private final SparkPIDController m_backRightPID;
 
   // Differential Drive
   private DifferentialDrive m_drive;
@@ -74,15 +82,19 @@ public class NeoMotorDriveSystem extends SubsystemBase
     m_backLeftEncoder   = m_backLeftMotor.getEncoder();
     m_backRightEncoder  = m_backRightMotor.getEncoder();
 
-
-
+    //PID Controllers
+    m_frontLeftPID  = m_frontLeftMotor.getPIDController();
+    m_frontRightPID = m_frontRightMotor.getPIDController();
+    m_backLeftPID   = m_backLeftMotor.getPIDController();
+    m_backRightPID  = m_backRightMotor.getPIDController();
 
     ///DIFFERENTIAL DRIVE///
     m_drive = new DifferentialDrive(m_frontLeftMotor, m_frontRightMotor);
     
   }
 
-  public double applyDeadBand(double inp)
+  ///INTERNAL METHODS///
+  private double applyDeadBand(double inp)
   {
     if(Math.abs(inp)>(0.1)){ // Control deadband here
       return inp;
@@ -90,11 +102,11 @@ public class NeoMotorDriveSystem extends SubsystemBase
     return 0.0;
   }
 
-  public double dampenSpeed(double inp){
+  private double dampenSpeed(double inp){
     return(Math.abs(inp)*inp*0.5); // Control speeddampener here
   }
 
-  ///METHODS///
+  ///EXTERNAL METHODS///
   public void driveArcade(double speed, double rotation)
   {
     m_drive.arcadeDrive(dampenSpeed(applyDeadBand(speed)), dampenSpeed(applyDeadBand(rotation)));
@@ -104,6 +116,20 @@ public class NeoMotorDriveSystem extends SubsystemBase
   public void driveTank(double speedLeft, double speedRight)
   {
     m_drive.tankDrive(dampenSpeed(applyDeadBand(speedLeft)), dampenSpeed(applyDeadBand(speedRight)));
+  }
+
+  public void setMotorRPM(double rpm)
+  {
+    double setPoint = rpm;
+    m_frontLeftPID.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+    m_frontRightPID.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+  }
+
+
+  public void stopMotors() 
+  {
+    m_frontLeftMotor.set(0);
+    m_frontRightMotor.set(0);
   }
 
 
