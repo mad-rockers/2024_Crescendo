@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.NeoMotorDriveSystem;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -9,67 +8,52 @@ public class AutoDrive extends Command
 {
     @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
-    private static final double WHEEL_RADIUS_IN = 3; //CHANGE ME//
-
-    private double wheelCircumference;
-    private double targetRPM;
-    private double targetDistance; //inches
-    private int isForward = 1;  //sign value
-
-    private final Timer m_timer = new Timer();
     private NeoMotorDriveSystem m_NeoMotorDriveSystem;
+    private double moveSpeed;
+    private double currentDistance_in;
+    private double targetDistance_in;
+    private int isTargetForward;
 
-    private double runTime;
-    /**
-    * Instructs the robot to move a set number of feet with a given RPM
-    **/
+    private boolean reachedTarget = false;
 
-
-    public AutoDrive(NeoMotorDriveSystem neoMotorDriveSystem, double rpm, double distance_ft) 
+    public AutoDrive(NeoMotorDriveSystem neoMotorDriveSystem, double speed, double distance_ft) 
     {
         m_NeoMotorDriveSystem = neoMotorDriveSystem;
-        targetRPM = rpm;
-
-        isForward = (int)(Math.abs(targetDistance)/targetDistance);
-
-        targetDistance = Math.abs(distance_ft*12); //Convert from ft -> in
-        wheelCircumference = 2*Math.PI*WHEEL_RADIUS_IN;
-
-        // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(neoMotorDriveSystem);
+        targetDistance_in = distance_ft*12;
+        moveSpeed = speed;
+        addRequirements(m_NeoMotorDriveSystem);
     }
 
-    // Calculates how long we need to move, starts the motors.
     @Override
     public void initialize() 
     {
-        m_timer.reset();
-
-        double targetRPS = 60/targetRPM;    //Get revolutions per second
-        double distanceRatio = targetDistance/wheelCircumference; //How many rotations we must perform
-        runTime = targetRPS*distanceRatio; 
-
-        m_NeoMotorDriveSystem.setMotorRPM(targetRPM * isForward);
-
-        m_timer.start();
+        m_NeoMotorDriveSystem.resetDistanceTraveled();
+        isTargetForward = (int)(Math.abs(targetDistance_in)/targetDistance_in);   //Gets the sign of the distance
+        targetDistance_in = targetDistance_in*isTargetForward;    //Absolutes the distance
     }
 
-    // Outputs distance_ft to SmartDashboard
     @Override
     public void execute() 
     {
-        double currentDistance = (m_timer.get()*targetRPM*wheelCircumference)/60;
-        SmartDashboard.putNumber("Predicted Current distance_ft", currentDistance);
+        currentDistance_in += m_NeoMotorDriveSystem.getDistanceTraveled();
+        m_NeoMotorDriveSystem.driveArcade(moveSpeed, 0);
+
+        if (currentDistance_in > targetDistance_in)
+            reachedTarget = true;
+
+        SmartDashboard.putNumber("Current Distance (Inches):", currentDistance_in);
     }
 
-    // Called once the command ends or is interrupted.
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) 
+    {
+        m_NeoMotorDriveSystem.stopMotors();
+    }
 
-    // Returns true when the command should end.
     @Override
-    public boolean isFinished() {
-        return m_timer.hasElapsed(runTime);
+    public boolean isFinished() 
+    {
+        return reachedTarget;
     }
 
 }

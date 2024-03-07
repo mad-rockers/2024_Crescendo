@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.subsystems.ExampleSubsystem;
+
 import frc.robot.subsystems.NeoMotorDriveSystem;
 
 /**
@@ -24,7 +24,6 @@ public class RobotContainer {
   /// SUBSYSTEMS ///
   // Remember these are members of the class meaning they should start with the m_ prefix and end
   // with the Subsystem suffix
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final NeoMotorDriveSystem m_NeoMotorDriveSystem = new NeoMotorDriveSystem();
 
   /// CONTROLLERS ///

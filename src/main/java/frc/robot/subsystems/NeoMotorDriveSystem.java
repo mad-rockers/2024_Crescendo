@@ -8,6 +8,7 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotConstants;
 import java.lang.Math;
 
 public class NeoMotorDriveSystem extends SubsystemBase 
@@ -41,12 +42,15 @@ public class NeoMotorDriveSystem extends SubsystemBase
   // PID Controllers
   private final SparkPIDController m_frontLeftPID;
   private final SparkPIDController m_frontRightPID;
-  private final SparkPIDController m_backLeftPID;
-  private final SparkPIDController m_backRightPID;
+  // private final SparkPIDController m_backLeftPID;
+  // private final SparkPIDController m_backRightPID;
 
   // Differential Drive
   private DifferentialDrive m_drive;
 
+  // Previous Wheel Rotations
+  private double prevLeftRotations = 0;
+  private double prevRightRotations = 0;
   
 
   public NeoMotorDriveSystem()
@@ -85,8 +89,8 @@ public class NeoMotorDriveSystem extends SubsystemBase
     //PID Controllers
     m_frontLeftPID  = m_frontLeftMotor.getPIDController();
     m_frontRightPID = m_frontRightMotor.getPIDController();
-    m_backLeftPID   = m_backLeftMotor.getPIDController();
-    m_backRightPID  = m_backRightMotor.getPIDController();
+    // m_backLeftPID   = m_backLeftMotor.getPIDController();
+    // m_backRightPID  = m_backRightMotor.getPIDController();
 
     ///DIFFERENTIAL DRIVE///
     m_drive = new DifferentialDrive(m_frontLeftMotor, m_frontRightMotor);
@@ -132,7 +136,30 @@ public class NeoMotorDriveSystem extends SubsystemBase
     m_frontRightMotor.set(0);
   }
 
+  public void resetDistanceTraveled()
+  {
+    prevLeftRotations = m_frontLeftEncoder.getPosition();
+    prevRightRotations = m_frontRightEncoder.getPosition();
+  }
 
+  public double getDistanceTraveled()
+  {
+    //Get number of rotations
+    double currentLeftRotations = m_frontLeftEncoder.getPosition();
+    double currentRightRotations = m_frontRightEncoder.getPosition();
+
+    //Distances in inches
+    double leftDistance = (currentLeftRotations-prevLeftRotations) * 2 * Math.PI * RobotConstants.WHEEL_RADIUS_IN;
+    double rightDistance = (currentRightRotations-prevRightRotations) * 2 * Math.PI * RobotConstants.WHEEL_RADIUS_IN;
+    
+    //Reset Counts
+    prevLeftRotations = currentLeftRotations;
+    prevRightRotations = currentRightRotations;
+
+    double averageDistance = (leftDistance+rightDistance)/2;
+
+    return averageDistance;
+  }
 
   ///DEBUG INFO///
   @Override
