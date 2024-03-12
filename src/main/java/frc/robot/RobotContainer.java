@@ -12,7 +12,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
-  CommandXboxController mController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
+  CommandXboxController mController =
+      new CommandXboxController(ControllerConstants.kDriverControllerPort);
 
   DriveSubsystem mDriveSubsystem = new DriveSubsystem();
   ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
@@ -23,34 +24,22 @@ public class RobotContainer {
 
   private void configureBindings() {
     mDriveSubsystem.setDefaultCommand(
-      mDriveSubsystem.run(
-        () -> mDriveSubsystem.arcadeDrive(
-          mController.getLeftY() * ControllerConstants.kDriveSpeed,
-          mController.getRightX() * ControllerConstants.kDriveSpeed
-        )
-      )
-    );
+        mDriveSubsystem.run(
+            () ->
+                mDriveSubsystem.arcadeDrive(
+                    mController.getLeftY() * ControllerConstants.kDriveSpeed,
+                    mController.getRightX() * ControllerConstants.kDriveSpeed)));
 
-    mController.a().onTrue(
-      mShooterSubsystem.runOnce(
-        () -> mShooterSubsystem.stowIntake()
-      )
-    );
-    mController.b().onTrue(
-      mShooterSubsystem.runOnce(
-        () -> mShooterSubsystem.deployIntake()
-      )
-    );
-    mController.y().onTrue(
-      mShooterSubsystem.runOnce(
-        () -> mShooterSubsystem.shoot()
-      )
-    );
-    mController.x().onTrue(
-      mShooterSubsystem.runOnce(
-        () -> mShooterSubsystem.reset()
-      )
-    );
+    mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
+    mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
+    mController.y().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
+    mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
+    mController.rightBumper().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.reset()));
+    // mController.x().onTrue(
+    //   mShooterSubsystem.runOnce(
+    //     () -> mShooterSubsystem.reset()
+    //   )
+    // );
     /*mController.a().whileTrue(
       mShooterSubsystem.run(
         () -> mShooterSubsystem.intake()
