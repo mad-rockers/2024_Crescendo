@@ -19,7 +19,7 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax mIntakeLift = new CANSparkMax(ShooterConstants.kIntakeLiftId, MotorType.kBrushless);
   SparkPIDController mIntakeLiftPID = mIntakeLift.getPIDController();
 
-  DigitalInput mLimitSwitch = new DigitalInput(8);
+  DigitalInput mLimitSwitch = new DigitalInput(ShooterConstants.kLimitSwitchPort);
 
   public ShooterSubsystem() {
     mIntakeLift.setInverted(false);
@@ -33,9 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
     mIntakeLiftPID.setOutputRange(-0.3, 0.3);
 
     mFrontShooter.setInverted(true);
-    // mFrontShooter.set(ShooterConstants.kShooterSpeed);
     mRearShooter.setInverted(true);
-    // mRearShooter.set(ShooterConstants.kShooterSpeed);
   }
 
   public void deployIntake() {
@@ -52,8 +50,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void shoot() {
     mIntakeRoller.set(-ShooterConstants.kIntakeRollerSpeed);
-    mFrontShooter.set(1);
-    mRearShooter.set(1);
+    mFrontShooter.set(ShooterConstants.kFrontShooterSpeed);
+    mRearShooter.set(ShooterConstants.kRearShooterSpeed);
   }
 
   public void intake() {

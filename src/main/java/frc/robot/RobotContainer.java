@@ -38,36 +38,6 @@ public class RobotContainer {
     mController
         .rightBumper()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.getIntakeMostOfTheWayDown()));
-    // mController.x().onTrue(
-    //   mShooterSubsystem.runOnce(
-    //     () -> mShooterSubsystem.reset()
-    //   )
-    // );
-    /*mController.a().whileTrue(
-      mShooterSubsystem.run(
-        () -> mShooterSubsystem.intake()
-      )
-    );
-    mController.b().whileTrue(
-      mShooterSubsystem.run(
-        () -> mShooterSubsystem.shoot()
-      )
-    );
-    mController.rightBumper().whileTrue(
-      mShooterSubsystem.run(
-        () -> mShooterSubsystem.deployIntake()
-      )
-    );
-    mController.leftBumper().whileTrue(
-      mShooterSubsystem.run(
-        () -> mShooterSubsystem.stowIntake()
-      )
-    );
-    mShooterSubsystem.setDefaultCommand(
-      mShooterSubsystem.run(
-        () -> mShooterSubsystem.stop()
-      )
-    );*/
   }
 
   public Command getAutonomousCommand() {
