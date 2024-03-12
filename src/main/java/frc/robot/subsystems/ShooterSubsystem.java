@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,6 +18,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   CANSparkMax mIntakeLift = new CANSparkMax(ShooterConstants.kIntakeLiftId, MotorType.kBrushless);
   SparkPIDController mIntakeLiftPID = mIntakeLift.getPIDController();
+
+  DigitalInput mLimitSwitch = new DigitalInput(8);
 
   public ShooterSubsystem() {
     mIntakeLift.setInverted(false);
@@ -64,12 +67,20 @@ public class ShooterSubsystem extends SubsystemBase {
     mRearShooter.stopMotor();
   }
 
-  public void reset() {
-    // mIntakeLift.getEncoder().setPosition(0);
+  public void getIntakeMostOfTheWayDown() {
     mIntakeLiftPID.setReference(-ShooterConstants.kIntakeUpPosition + 1, ControlType.kPosition);
   }
 
+  public void reset() {
+    // mIntakeLift.getEncoder().setPosition(0);
+
+    // while (!mLimitSwitch.get()) {
+    //   mIntakeLiftPID.setReference(-0.1, ControlType.kVelocity);
+    // }
+  }
+
   public void periodic() {
+    SmartDashboard.putBoolean("Limit Switch Value", mLimitSwitch.get());
     SmartDashboard.putNumber("Intake Lift", mIntakeLift.getEncoder().getPosition());
   }
 }
