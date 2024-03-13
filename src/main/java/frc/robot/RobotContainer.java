@@ -32,7 +32,8 @@ public class RobotContainer {
 
     mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
     mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
-    mController.y().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
+    mController.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
+    mController.leftTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
     mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
     mController.leftBumper().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.reset()));
     mController

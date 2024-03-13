@@ -49,9 +49,13 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shoot() {
-    mIntakeRoller.set(-ShooterConstants.kIntakeRollerSpeed);
-    mFrontShooter.set(ShooterConstants.kFrontShooterSpeed);
+    mIntakeRoller.set(-0.25);
+    // mFrontShooter.set(ShooterConstants.kFrontShooterSpeed);
     mRearShooter.set(ShooterConstants.kRearShooterSpeed);
+  }
+
+  public void startFrontShooterMotor() {
+    mFrontShooter.set(ShooterConstants.kFrontShooterSpeed);
   }
 
   public void intake() {
