@@ -5,9 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.Autos;
+import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -17,6 +18,7 @@ public class RobotContainer {
 
   DriveSubsystem mDriveSubsystem = new DriveSubsystem();
   ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
+  CameraSubsystem mCameraSubsystem = new CameraSubsystem();
 
   public RobotContainer() {
     configureBindings();
@@ -33,7 +35,9 @@ public class RobotContainer {
     mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
     mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
     mController.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
-    mController.leftTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
+    mController
+        .leftTrigger()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
     mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
     mController.leftBumper().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.reset()));
     mController
@@ -42,6 +46,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return Autos.moveBack(mDriveSubsystem);
   }
 }

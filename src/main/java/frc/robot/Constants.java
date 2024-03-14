@@ -13,6 +13,11 @@ public class Constants {
     public static int kRightBackId = 4;
   }
 
+  public static class AutonomousConstants {
+    public static final double WHEEL_RADIUS_IN = 3;
+    public static final double DRIVE_GEARBOX_RATIO = (50 / 14) * (45 / 19);
+  }
+
   public static class ShooterConstants {
     public static int kIntakeRollerPort = 9;
     public static int kFrontShooterPort = 7;
@@ -23,7 +28,7 @@ public class Constants {
     public static double kIntakeLiftP = 0.1;
 
     // public static double kIntakeUpPosition = 5.7;
-    public static double kIntakeUpPosition = 5.6;
+    public static double kIntakeUpPosition = 5.5;
     public static double kIntakeDownPosition = 0;
     public static double kIntakeRollerSpeed = 1;
     public static double kShooterSpeed = 1;

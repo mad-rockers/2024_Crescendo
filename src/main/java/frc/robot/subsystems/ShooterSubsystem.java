@@ -70,11 +70,11 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void getIntakeMostOfTheWayDown() {
-    mIntakeLiftPID.setReference(-ShooterConstants.kIntakeUpPosition + 1, ControlType.kPosition);
+    mIntakeLiftPID.setReference(-ShooterConstants.kIntakeUpPosition + 0.5, ControlType.kPosition);
   }
 
   public void reset() {
-    // mIntakeLift.getEncoder().setPosition(0);
+    mIntakeLift.getEncoder().setPosition(0);
 
     // while (!mLimitSwitch.get()) {
     //   mIntakeLiftPID.setReference(-0.1, ControlType.kVelocity);
