@@ -23,7 +23,7 @@ public class Constants {
     public static int kFrontShooterPort = 7;
     public static int kRearShooterPort = 8;
     public static int kIntakeLiftId = 7;
-    public static int kLimitSwitchPort = 8;
+    public static int kAngleLimitSwitchPort = 8;
 
     public static double kIntakeLiftP = 0.1;
 
