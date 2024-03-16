@@ -149,6 +149,8 @@ public class NeoMotorDriveSystem extends SubsystemBase
     double currentRightRotations = m_frontRightEncoder.getPosition();
 
     //Distances in inches
+
+    // These may need gearbox ratios appended to them for accurate measurments.
     double leftDistance = (currentLeftRotations-prevLeftRotations) * 2 * Math.PI * RobotConstants.WHEEL_RADIUS_IN;
     double rightDistance = (currentRightRotations-prevRightRotations) * 2 * Math.PI * RobotConstants.WHEEL_RADIUS_IN;
     
