@@ -37,11 +37,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     mDrivetrain = new DifferentialDrive(mLeftFront, mRightFront);
 
-    // mLeftFront.restoreFactoryDefaults();
-    // mLeftBack.restoreFactoryDefaults();
-    // mRightFront.restoreFactoryDefaults();
-    // mRightBack.restoreFactoryDefaults();
-
     mLeftFrontEncoder = mLeftFront.getEncoder();
     mLeftBackEncoder = mLeftBack.getEncoder();
     mRightFrontEncoder = mRightFront.getEncoder();
@@ -51,12 +46,25 @@ public class DriveSubsystem extends SubsystemBase {
     mRightFrontPID = mRightFront.getPIDController();
   }
 
+  private double applyDeadBand(double input) {
+    if (Math.abs(input) > (0.1)) { // Control deadband here
+      return input;
+    }
+    return 0.0;
+  }
+
+  private double dampenSpeed(double input) {
+    return (Math.abs(input) * input * 0.5); // Control speeddampener here
+  }
+
   public void tankDrive(double left_speed, double right_speed) {
-    mDrivetrain.tankDrive(left_speed, right_speed);
+    mDrivetrain.tankDrive(
+        dampenSpeed(applyDeadBand(left_speed)), dampenSpeed(applyDeadBand(right_speed)));
   }
 
   public void arcadeDrive(double forward_speed, double turn_speed) {
-    mDrivetrain.arcadeDrive(forward_speed, turn_speed);
+    mDrivetrain.arcadeDrive(
+        dampenSpeed(applyDeadBand(forward_speed)), dampenSpeed(applyDeadBand(turn_speed)));
   }
 
   public void resetDistanceTraveled() {
