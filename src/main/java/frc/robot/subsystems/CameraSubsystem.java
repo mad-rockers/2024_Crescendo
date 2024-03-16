@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.FieldConstants;
 
 public class CameraSubsystem extends SubsystemBase {
   /*
@@ -116,8 +117,8 @@ public class CameraSubsystem extends SubsystemBase {
     return m_tv.getDouble(0) == 1;
   }
 
-  public double getTagID() {
-    return m_tid.getInteger(0);
+  public int getTagID() {
+    return (int)(m_tid.getInteger(0));
   }
 
   /// DISTANCES
@@ -134,6 +135,31 @@ public class CameraSubsystem extends SubsystemBase {
                 + getYDistOffset() * getYDistOffset()
                 + getZDistOffset() * getZDistOffset());
     return distance;
+  }
+
+  public double getTagDistanceBackup() {
+    if (!isTargetVisible()) {
+      /*
+       * Return a negative number as another indicator that the target is not visible.
+       */
+      return -1;
+    }
+
+    double targetOffsetAngleVertical = getYAngleOffset();
+    /*
+     * Adjust calculation to account for the vertical angle of the camera.
+     */
+    double angleToTargetRad = Math.toRadians(targetOffsetAngleVertical + CAMERA_ANGLE);
+
+    /*
+     * Account for the height difference between the camera and the target, not just the target's height from the ground.
+     */
+    double heightDifference = FieldConstants.AprilTagHeights_in[getTagID()] - CAMERA_HEIGHT;
+
+    /*
+     * distance = height / tan(angle)
+     */
+    return heightDifference / Math.tan(angleToTargetRad);
   }
 
   @Override
