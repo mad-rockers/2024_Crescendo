@@ -7,6 +7,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CameraSubsystem extends SubsystemBase {
+  /*
+   * Helpful Resources:
+   * Limelight Docs: https://readthedocs.org/projects/limelight/downloads/pdf/latest/
+   * Limelight Complete NetworkTable: https://docs.limelightvision.io/docs/docs-limelight/apis/complete-networktables-api
+   */
+
+  // NetworkTable entries for Limelight
+  private final NetworkTable m_limelightTable =
+      NetworkTableInstance.getDefault().getTable("limelight");
+
+  // LIMELIGHT POSITIONAL DATA
+  double[] cameraData = new double[6];
+
+  // Angle info
+  // tx -> angle left or right from the camera
+  // ty -> angle up for down from the camera
+  // ta -> area on screen the apriltag takes up
+  // tv -> check whether target is valid
+  private final NetworkTableEntry m_tx = m_limelightTable.getEntry("tx");
+  private final NetworkTableEntry m_ty = m_limelightTable.getEntry("ty");
+  private final NetworkTableEntry m_ta = m_limelightTable.getEntry("ta");
+  private final NetworkTableEntry m_tv = m_limelightTable.getEntry("tv");
+  private final NetworkTableEntry m_tid = m_limelightTable.getEntry("tid");
+
+  private final NetworkTableEntry m_TargetPoseRS =
+      m_limelightTable.getEntry("targetpose_robotspace");
 
   /*
    * Constant heights for various parts of the distance equation.
@@ -17,50 +43,97 @@ public class CameraSubsystem extends SubsystemBase {
       56.75; // Height of the target from the ground in inches
   private static final double CAMERA_ANGLE = 6.0; // Angle of the camera in degrees
 
-  // NetworkTable entries for Limelight
-  private final NetworkTable limelightTable;
-  /*
-   * tv = whether or not the camera sees a valid target.
-   */
-  private NetworkTableEntry tv;
-  /*
-   * ty = the vertical offset, in degrees.
-   */
-  private NetworkTableEntry ty;
-
   public CameraSubsystem() {
-    limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-    tv = limelightTable.getEntry("tv");
-    ty = limelightTable.getEntry("ty");
+
+    // All of these values need to be in meters.
+
+    cameraData[0] = 0; // Distance forward from center of the robot.
+    cameraData[1] = 0; // Distance horizontally from the center of the robot.
+    cameraData[2] = 0; // Distance vertically from the center of the robot.
+    cameraData[3] = 0; // Roll of the camera
+    cameraData[4] = 0; // Pitch of the camera
+    cameraData[5] = 0; // Yaw of the camera
+
+    NetworkTableInstance.getDefault()
+        .getTable("limelight")
+        .getEntry("camerapose_robotspace_set")
+        .setDoubleArray(cameraData);
   }
 
-  public boolean isValidTargetSeen() {
-    return tv.getDouble(0.0) == 1.0;
+  /// GETTERS///
+
+  /*
+   * NOTE:
+   * All of these values should return from the center of the robot assuming that the cameraData has been set up properly, see above.
+   * All units will be in meters.
+   *
+   */
+
+  // Angle Offsets
+  public double getXAngleOffset() {
+    return m_tx.getDouble(0.0);
   }
 
-  public double calculateDistanceToTarget() {
-    if (!isValidTargetSeen()) {
-      /*
-       * Return a negative number as another indicator that the target is not visible.
-       */
-      return -1;
-    }
+  public double getYAngleOffset() {
+    return m_ty.getDouble(0.0);
+  }
 
-    double targetOffsetAngleVertical = ty.getDouble(0.0);
-    /*
-     * Adjust calculation to account for the vertical angle of the camera.
-     */
-    double angleToTargetRad = Math.toRadians(targetOffsetAngleVertical + CAMERA_ANGLE);
+  // Distance of the april tag horizontally from the robot.
+  public double getXDistOffset() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[0];
+  }
 
-    /*
-     * Account for the height difference between the camera and the target, not just the target's height from the ground.
-     */
-    double heightDifference = TARGET_HEIGHT - CAMERA_HEIGHT;
+  // Distance of the tag vertically from the robot.
+  public double getYDistOffset() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[1];
+  }
 
-    /*
-     * distance = height / tan(angle)
-     */
-    return heightDifference / Math.tan(angleToTargetRad);
+  // Ditsance of the tag forward from the robot.
+  public double getZDistOffset() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[2];
+  }
+
+  // Pitch of the tag
+  public double getXRotation() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[3];
+  }
+
+  // Yaw of the tag
+  public double getYRotation() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[4];
+  }
+
+  // Roll of the tag
+  public double getZRotation() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[5];
+  }
+
+  public double getVisualArea() {
+    return m_ta.getDouble(0.0);
+  }
+
+  public boolean isTargetVisible() {
+    return m_tv.getDouble(0) == 1;
+  }
+
+  public double getTagID() {
+    return m_tid.getInteger(0);
+  }
+
+  /// DISTANCES
+  public double getTagDistance2D() {
+    double distance =
+        Math.sqrt(getXDistOffset() * getXDistOffset() + getZDistOffset() * getZDistOffset());
+    return distance;
+  }
+
+  public double getTagDistance3D() {
+    double distance =
+        Math.sqrt(
+            getXDistOffset() * getXDistOffset()
+                + getYDistOffset() * getYDistOffset()
+                + getZDistOffset() * getZDistOffset());
+    return distance;
   }
 
   @Override
@@ -68,10 +141,10 @@ public class CameraSubsystem extends SubsystemBase {
     /*
      * Can the target be seen?
      */
-    SmartDashboard.putBoolean("Can See Target?", isValidTargetSeen());
+    SmartDashboard.putBoolean("Can See Target?", isTargetVisible());
     /*
      * Display the distance (in inches) to the target. If there is no target visible, then this should display a "-1".
      */
-    SmartDashboard.putNumber("Distance to Target:", calculateDistanceToTarget());
+    SmartDashboard.putNumber("Distance to Target:", getTagDistance2D());
   }
 }
