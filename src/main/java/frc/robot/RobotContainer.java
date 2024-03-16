@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.IntakeLimitSwitchTrigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.CameraSubsystem;
@@ -43,6 +44,10 @@ public class RobotContainer {
     mController
         .rightBumper()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.getIntakeMostOfTheWayDown()));
+
+    IntakeLimitSwitchTrigger intakeTrigger = new IntakeLimitSwitchTrigger();
+    // intakeTrigger.debounce(1); unsure if debounce is needed, yet
+    intakeTrigger.onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopIntakeMotor()));
   }
 
   public Command getAutonomousCommand() {

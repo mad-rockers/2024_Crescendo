@@ -39,18 +39,15 @@ public class ShooterSubsystem extends SubsystemBase {
   public void deployIntake() {
     mIntakeRoller.set(ShooterConstants.kIntakeRollerSpeed);
     mIntakeLiftPID.setReference(ShooterConstants.kIntakeDownPosition, ControlType.kPosition);
-    // mIntakeLift.set(0.2);
   }
 
   public void stowIntake() {
     mIntakeRoller.stopMotor();
     mIntakeLiftPID.setReference(ShooterConstants.kIntakeUpPosition, ControlType.kPosition);
-    // mIntakeLift.set(-0.2);
   }
 
   public void shoot() {
     mIntakeRoller.set(-0.25);
-    // mFrontShooter.set(ShooterConstants.kFrontShooterSpeed);
     mRearShooter.set(ShooterConstants.kRearShooterSpeed);
   }
 
@@ -67,6 +64,10 @@ public class ShooterSubsystem extends SubsystemBase {
     mIntakeRoller.stopMotor();
     mFrontShooter.stopMotor();
     mRearShooter.stopMotor();
+  }
+
+  public void stopIntakeMotor() {
+    mIntakeRoller.stopMotor();
   }
 
   public void getIntakeMostOfTheWayDown() {
