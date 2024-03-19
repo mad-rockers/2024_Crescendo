@@ -27,8 +27,7 @@ public class Constants {
 
     public static double kIntakeLiftP = 0.1;
 
-    // public static double kIntakeUpPosition = 5.7;
-    public static double kIntakeUpPosition = 5.5;
+    public static double kIntakeUpPosition = 47;
     public static double kIntakeDownPosition = 0;
     public static double kIntakeRollerSpeed = 1;
     public static double kShooterSpeed = 1;
