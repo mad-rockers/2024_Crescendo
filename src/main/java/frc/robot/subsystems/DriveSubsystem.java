@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutonomousConstants;
 import frc.robot.Constants.DriveConstants;
@@ -54,7 +55,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   private double dampenSpeed(double input) {
-    return (Math.abs(input) * input * 1.0); // Control speeddampener here
+    return (Math.abs(input) * input * DriveConstants.kDriveSpeed); // Control speeddampener here
   }
 
   public void tankDrive(double left_speed, double right_speed) {
@@ -63,6 +64,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double forward_speed, double turn_speed) {
+    SmartDashboard.putNumber("forward_speed_raw)", forward_speed);
+    SmartDashboard.putNumber("turn_speed_raw", turn_speed);
+    SmartDashboard.putNumber("forward_speed)", dampenSpeed(applyDeadBand(forward_speed)));
+    SmartDashboard.putNumber("turn_speed", dampenSpeed(applyDeadBand(turn_speed)));
     mDrivetrain.arcadeDrive(
         dampenSpeed(applyDeadBand(forward_speed)), dampenSpeed(applyDeadBand(turn_speed)));
   }
