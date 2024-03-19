@@ -46,11 +46,11 @@ public class CameraSubsystem extends SubsystemBase {
 
     // All of these values need to be in meters.
 
-    cameraData[0] = 0; // Distance forward from center of the robot.
-    cameraData[1] = 0; // Distance horizontally from the center of the robot.
-    cameraData[2] = 0; // Distance vertically from the center of the robot.
+    cameraData[0] = 0.2159; // Distance forward from center of the robot.
+    cameraData[1] = 0.0508; // Distance horizontally from the center of the robot.
+    cameraData[2] = 0.7239; // Distance vertically from the center of the robot.
     cameraData[3] = 0; // Roll of the camera
-    cameraData[4] = 0; // Pitch of the camera
+    cameraData[4] = 6; // Pitch of the camera
     cameraData[5] = 0; // Yaw of the camera
 
     NetworkTableInstance.getDefault()
