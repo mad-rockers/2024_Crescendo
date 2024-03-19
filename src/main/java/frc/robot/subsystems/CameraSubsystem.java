@@ -118,7 +118,7 @@ public class CameraSubsystem extends SubsystemBase {
   }
 
   public int getTagID() {
-    return (int)(m_tid.getInteger(0));
+    return (int) (m_tid.getInteger(0));
   }
 
   /// DISTANCES
@@ -154,7 +154,8 @@ public class CameraSubsystem extends SubsystemBase {
     /*
      * Account for the height difference between the camera and the target, not just the target's height from the ground.
      */
-    double heightDifference = Constants.FieldConstants.AprilTagHeights_in[getTagID()] - CAMERA_HEIGHT;
+    double heightDifference =
+        Constants.FieldConstants.AprilTagHeights_in[getTagID()] - CAMERA_HEIGHT;
 
     /*
      * distance = height / tan(angle)
