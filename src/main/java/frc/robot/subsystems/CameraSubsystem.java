@@ -40,8 +40,6 @@ public class CameraSubsystem extends SubsystemBase {
    */
   private static final double CAMERA_HEIGHT =
       29.0; // Height of the camera from the ground in inches
-  private static final double TARGET_HEIGHT =
-      56.75; // Height of the target from the ground in inches
   private static final double CAMERA_ANGLE = 6.0; // Angle of the camera in degrees
 
   public CameraSubsystem() {
