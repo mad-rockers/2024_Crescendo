@@ -54,7 +54,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   private double dampenSpeed(double input) {
-    return (Math.abs(input) * input * 0.5); // Control speeddampener here
+    return (Math.abs(input) * input * 1.0); // Control speeddampener here
   }
 
   public void tankDrive(double left_speed, double right_speed) {
