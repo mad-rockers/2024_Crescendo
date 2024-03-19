@@ -5,7 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.FieldConstants;
+import frc.robot.Constants;
 
 public class CameraSubsystem extends SubsystemBase {
   /*
@@ -154,7 +154,7 @@ public class CameraSubsystem extends SubsystemBase {
     /*
      * Account for the height difference between the camera and the target, not just the target's height from the ground.
      */
-    double heightDifference = FieldConstants.AprilTagHeights_in[getTagID()] - CAMERA_HEIGHT;
+    double heightDifference = Constants.FieldConstants.AprilTagHeights_in[getTagID()] - CAMERA_HEIGHT;
 
     /*
      * distance = height / tan(angle)
@@ -172,5 +172,6 @@ public class CameraSubsystem extends SubsystemBase {
      * Display the distance (in inches) to the target. If there is no target visible, then this should display a "-1".
      */
     SmartDashboard.putNumber("Distance to Target:", getTagDistance2D());
+    SmartDashboard.putNumber("Backup Dist to Target", getTagDistanceBackup());
   }
 }
