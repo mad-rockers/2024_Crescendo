@@ -3,7 +3,7 @@ package frc.robot;
 public class Constants {
   public static class ControllerConstants {
     public static int kDriverControllerPort = 0;
-    public static double kDriveSpeed = 0.5;
+    // public static double kDriveSpeed = 0.5;
   }
 
   public static class DriveConstants {
@@ -11,6 +11,8 @@ public class Constants {
     public static int kLeftBackId = 2;
     public static int kRightFrontId = 3;
     public static int kRightBackId = 4;
+
+    public static double kDriveSpeed = 0.5;
   }
 
   public static class AutonomousConstants {
@@ -27,8 +29,7 @@ public class Constants {
 
     public static double kIntakeLiftP = 0.1;
 
-    // public static double kIntakeUpPosition = 5.7;
-    public static double kIntakeUpPosition = 5.5;
+    public static double kIntakeUpPosition = 50;
     public static double kIntakeDownPosition = 0;
     public static double kIntakeRollerSpeed = 1;
     public static double kShooterSpeed = 1;
