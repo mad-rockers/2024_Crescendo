@@ -81,6 +81,14 @@ public class ShooterSubsystem extends SubsystemBase {
     mIntakeLift.getEncoder().setPosition(0);
   }
 
+  public void liftIntakeForReset() {
+    mIntakeLiftPID.setReference(0.1, ControlType.kVelocity);
+  }
+
+  public boolean getLimitSwitchPressed() {
+    return !mAngleLimitSwitch.get();
+  }
+
   public void periodic() {
     SmartDashboard.putBoolean("Limit Switch Value", mAngleLimitSwitch.get());
     SmartDashboard.putNumber("Intake Lift", mIntakeLift.getEncoder().getPosition());
