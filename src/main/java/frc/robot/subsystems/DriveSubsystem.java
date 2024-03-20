@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutonomousConstants;
 import frc.robot.Constants.DriveConstants;
@@ -37,11 +38,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     mDrivetrain = new DifferentialDrive(mLeftFront, mRightFront);
 
-    // mLeftFront.restoreFactoryDefaults();
-    // mLeftBack.restoreFactoryDefaults();
-    // mRightFront.restoreFactoryDefaults();
-    // mRightBack.restoreFactoryDefaults();
-
     mLeftFrontEncoder = mLeftFront.getEncoder();
     mLeftBackEncoder = mLeftBack.getEncoder();
     mRightFrontEncoder = mRightFront.getEncoder();
@@ -51,12 +47,29 @@ public class DriveSubsystem extends SubsystemBase {
     mRightFrontPID = mRightFront.getPIDController();
   }
 
+  private double applyDeadBand(double input) {
+    if (Math.abs(input) > (0.1)) { // Control deadband here
+      return input;
+    }
+    return 0.0;
+  }
+
+  private double dampenSpeed(double input) {
+    return (Math.abs(input) * input * DriveConstants.kDriveSpeed); // Control speeddampener here
+  }
+
   public void tankDrive(double left_speed, double right_speed) {
-    mDrivetrain.tankDrive(left_speed, right_speed);
+    mDrivetrain.tankDrive(
+        dampenSpeed(applyDeadBand(left_speed)), dampenSpeed(applyDeadBand(right_speed)));
   }
 
   public void arcadeDrive(double forward_speed, double turn_speed) {
-    mDrivetrain.arcadeDrive(forward_speed, turn_speed);
+    SmartDashboard.putNumber("forward_speed_raw)", forward_speed);
+    SmartDashboard.putNumber("turn_speed_raw", turn_speed);
+    SmartDashboard.putNumber("forward_speed)", dampenSpeed(applyDeadBand(forward_speed)));
+    SmartDashboard.putNumber("turn_speed", dampenSpeed(applyDeadBand(turn_speed)));
+    mDrivetrain.arcadeDrive(
+        dampenSpeed(applyDeadBand(forward_speed)), dampenSpeed(applyDeadBand(turn_speed)));
   }
 
   public void resetDistanceTraveled() {
