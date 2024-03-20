@@ -67,8 +67,8 @@ public class Constants {
       0.0508, // [1] Distance horizontally from the center of the robot.
       0.718, // [2] Distance vertically from the center of the robot.
       0, // [3] Roll of the camera
-      3, // [4] Pitch of the camera
-      0 // [5] Yaw of the camera
+      1.5, // [4] Pitch of the camera
+      1.5 // [5] Yaw of the camera
     };
   }
 }
