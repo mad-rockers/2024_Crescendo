@@ -27,10 +27,7 @@ public class RobotContainer {
   private void configureBindings() {
     mDriveSubsystem.setDefaultCommand(
         mDriveSubsystem.run(
-            () ->
-                mDriveSubsystem.arcadeDrive(
-                    mController.getLeftY(),
-                    mController.getRightX())));
+            () -> mDriveSubsystem.arcadeDrive(mController.getLeftY(), mController.getRightX())));
 
     mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
     mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
