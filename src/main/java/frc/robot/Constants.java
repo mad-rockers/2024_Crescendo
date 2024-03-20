@@ -63,12 +63,12 @@ public class Constants {
 
   public static class CameraConstants {
     public static double[] CameraData = {
-      0.2159,   // [0] Distance forward from center of the robot.
-      -0.0508,   // [1] Distance horizontally from the center of the robot.
-      0.7239,   // [2] Distance vertically from the center of the robot.
-      0,        // [3] Roll of the camera
-      15,        // [4] Pitch of the camera
-      0         // [5] Yaw of the camera
+      0.2159, // [0] Distance forward from center of the robot.
+      -0.0508, // [1] Distance horizontally from the center of the robot.
+      0.7239, // [2] Distance vertically from the center of the robot.
+      0, // [3] Roll of the camera
+      15, // [4] Pitch of the camera
+      0 // [5] Yaw of the camera
     };
   }
 }
