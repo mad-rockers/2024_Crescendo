@@ -66,13 +66,16 @@ public class ShooterSubsystem extends SubsystemBase {
     mRearShooter.stopMotor();
   }
 
-  public void getIntakeMostOfTheWayDown() {
-    mIntakeLiftPID.setReference(-ShooterConstants.kIntakeUpPosition + 0.5, ControlType.kPosition);
+  public void setEncoderToZero() {
+    mIntakeLift.getEncoder().setPosition(0);
   }
 
-  public void reset() {
-    while (!mAngleLimitSwitch.get()) {
-      mIntakeLiftPID.setReference(-0.1, ControlType.kVelocity);
+  public void resetIntakeLiftEncoder() {
+    /*
+     * As of prototyping, the limit switch is set to be "false" when depressed.
+     */
+    while (mAngleLimitSwitch.get()) {
+      mIntakeLiftPID.setReference(0.1, ControlType.kVelocity);
     }
 
     mIntakeLift.getEncoder().setPosition(0);

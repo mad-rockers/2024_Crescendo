@@ -36,10 +36,12 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
     mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
-    mController.leftBumper().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.reset()));
+    mController
+        .leftBumper()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.resetIntakeLiftEncoder()));
     mController
         .rightBumper()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.getIntakeMostOfTheWayDown()));
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
   }
 
   public Command getAutonomousCommand() {
