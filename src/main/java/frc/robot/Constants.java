@@ -11,7 +11,7 @@ public class Constants {
       51.875, // ID 4, Speaker Center, Red
       48.125, // ID 5, AMP, Red
       48.125, // ID 6, AMP, Blue
-      51.875, // ID 7, Speaker Center, Blue
+      57.0, // ID 7, Speaker Center, Blue
       51.875, // ID 8, Speaker Left, Blue
       48.5, // ID 9, Source Right, Blue
       48.5, // ID 10, Source Left, Blue
@@ -64,10 +64,10 @@ public class Constants {
   public static class CameraConstants {
     public static double[] CameraData = {
       0.2159, // [0] Distance forward from center of the robot.
-      -0.0508, // [1] Distance horizontally from the center of the robot.
-      0.7239, // [2] Distance vertically from the center of the robot.
+      0.0508, // [1] Distance horizontally from the center of the robot.
+      0.718, // [2] Distance vertically from the center of the robot.
       0, // [3] Roll of the camera
-      15, // [4] Pitch of the camera
+      3, // [4] Pitch of the camera
       0 // [5] Yaw of the camera
     };
   }

@@ -36,7 +36,7 @@ public class CameraSubsystem extends SubsystemBase {
    * Constant heights for various parts of the distance equation.
    */
   private static final double CAMERA_HEIGHT =
-      29.0; // Height of the camera from the ground in inches
+      28.25; // Height of the camera from the ground in inches
   private static final double CAMERA_ANGLE =
       Constants.CameraConstants.CameraData[4]; // Angle of the camera in degrees
 
@@ -162,13 +162,13 @@ public class CameraSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Can See Target?", isTargetVisible());
     SmartDashboard.putNumber("Tag ID", getTagID());
     SmartDashboard.putNumber("Tag Height (P)", getYDistOffset() * 3.281 * 12);
-    if (getTagID() != 0)
+    if (getTagID() > 0)
       SmartDashboard.putNumber(
           "Tag Height (A)", Constants.FieldConstants.AprilTagHeights_in[getTagID()]);
     /*
      * Display the distance (in inches) to the target. If there is no target visible, then this should display a "-1".
      */
     SmartDashboard.putNumber("Distance to Target:", getTagDistance2D());
-    SmartDashboard.putNumber("Backup Dist to Target", getTagDistanceBackup());
+    SmartDashboard.putNumber("Backup Dist to T1arget", getTagDistanceBackup());
   }
 }
