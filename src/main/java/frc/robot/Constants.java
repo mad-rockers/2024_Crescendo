@@ -12,8 +12,8 @@ public class Constants {
     public static int kRightFrontId = 3;
     public static int kRightBackId = 4;
 
-    public static double kDriveSpeed = 0.9;
-    public static double kTurnSensitivity = 0.6;
+    public static double kDriveSpeed = 0.65;
+    public static double kTurnSensitivity = 0.65;
   }
 
   public static class AutonomousConstants {
