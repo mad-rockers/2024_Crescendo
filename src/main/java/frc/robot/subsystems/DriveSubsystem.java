@@ -69,7 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("forward_speed)", dampenSpeed(applyDeadBand(forward_speed)));
     SmartDashboard.putNumber("turn_speed", dampenSpeed(applyDeadBand(turn_speed)));
     mDrivetrain.arcadeDrive(
-        dampenSpeed(applyDeadBand(forward_speed)), dampenSpeed(applyDeadBand(turn_speed)));
+        dampenSpeed(applyDeadBand(forward_speed)), dampenSpeed(applyDeadBand(turn_speed)) * DriveConstants.kTurnSensitivity);
   }
 
   public void resetDistanceTraveled() {

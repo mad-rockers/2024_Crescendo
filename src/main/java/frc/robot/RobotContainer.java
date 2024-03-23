@@ -32,17 +32,17 @@ public class RobotContainer {
                     mController.getLeftY(),
                     mController.getRightX())));
 
-    mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
-    mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
-    mController.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
-    mController
-        .leftTrigger()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
-    mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
-    mController.leftBumper().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.reset()));
-    mController
-        .rightBumper()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.getIntakeMostOfTheWayDown()));
+    // mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
+    // mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
+    // mController.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
+    // mController
+    //     .leftTrigger()
+    //     .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
+    // mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
+    // mController.leftBumper().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.reset()));
+    // mController
+    //     .rightBumper()
+    //     .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.getIntakeMostOfTheWayDown()));
   }
 
   public Command getAutonomousCommand() {
