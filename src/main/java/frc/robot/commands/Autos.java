@@ -18,7 +18,7 @@ public final class Autos {
   //   }
   public static Command shootThenMoveBack(
       ShooterSubsystem shooterSubsystem, DriveSubsystem neoMotorDriveSystem) {
-    return Commands.sequence(new AutoShoot(shooterSubsystem), new AutoDrive(neoMotorDriveSystem));
+    return Commands.sequence(new AutoShoot(shooterSubsystem, neoMotorDriveSystem), new AutoDrive(neoMotorDriveSystem));
   }
 
   private Autos() {

@@ -8,7 +8,7 @@ public class AutoDrive extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private DriveSubsystem m_NeoMotorDriveSystem;
 
-  private static final double MOVE_SPEED = 0.5;
+  private static final double MOVE_SPEED = 1.0;
   private double currentDistance_in = 0;
   private double targetDistance = 72;
   private int isTargetForward;

@@ -21,15 +21,15 @@ public class Constants {
   }
 
   public static class ShooterConstants {
-    public static int kIntakeRollerPort = 9;
-    public static int kFrontShooterPort = 7;
-    public static int kRearShooterPort = 8;
+    public static int kIntakeRollerPort = 0;
+    public static int kFrontShooterPort = 8;
+    public static int kRearShooterPort = 9;
     public static int kIntakeLiftId = 7;
     public static int kLimitSwitchPort = 8;
 
     public static double kIntakeLiftP = 0.1;
 
-    public static double kIntakeUpPosition = 50;
+    public static double kIntakeUpPosition = 45;
     public static double kIntakeDownPosition = 0;
     public static double kIntakeRollerSpeed = 1;
     public static double kShooterSpeed = 1;
