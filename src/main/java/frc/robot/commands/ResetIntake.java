@@ -17,13 +17,12 @@ public class ResetIntake extends Command {
   @Override
   public void initialize() {
     m_ShooterSubsystem.stopAllMotors();
+    m_ShooterSubsystem.stowIntake();
   }
 
   @Override
   public void execute() {
-    if (!m_ShooterSubsystem.getLimitSwitchPressed()) {
-      m_ShooterSubsystem.liftIntakeForReset();
-    } else {
+    if (m_ShooterSubsystem.getLimitSwitchPressed()) {
       m_ShooterSubsystem.stopAllMotors();
       m_ShooterSubsystem.setEncoderToZero();
       m_isFinished = true;
@@ -31,7 +30,9 @@ public class ResetIntake extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_isFinished = false;
+  }
 
   @Override
   public boolean isFinished() {

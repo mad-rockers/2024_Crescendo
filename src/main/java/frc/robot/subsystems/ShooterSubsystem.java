@@ -70,6 +70,10 @@ public class ShooterSubsystem extends SubsystemBase {
     mIntakeLift.getEncoder().setPosition(0);
   }
 
+  public void setEncoderToNegativeFifty() {
+    mIntakeLift.getEncoder().setPosition(-50);
+  }
+
   public void resetIntakeLiftEncoder() {
     /*
      * As of prototyping, the limit switch is set to be "false" when depressed.
