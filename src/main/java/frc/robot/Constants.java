@@ -12,7 +12,7 @@ public class Constants {
     public static int kRightFrontId = 3;
     public static int kRightBackId = 4;
 
-    public static double kDriveSpeed = 0.7;
+    public static double kDriveSpeed = 0.5;
   }
 
   public static class AutonomousConstants {
