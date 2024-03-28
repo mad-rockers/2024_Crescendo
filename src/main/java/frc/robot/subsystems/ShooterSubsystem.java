@@ -20,6 +20,9 @@ public class ShooterSubsystem extends SubsystemBase {
   SparkPIDController mIntakeLiftPID = mIntakeLift.getPIDController();
 
   DigitalInput mAngleLimitSwitch = new DigitalInput(ShooterConstants.kAngleLimitSwitchPort);
+  DigitalInput mRecieverLimitSwitchLeft = new DigitalInput(ShooterConstants.kIntakeReceiverLeftID);
+  DigitalInput mRecieverLimitSwitchRight = new DigitalInput(ShooterConstants.kIntakeReceiverRightID);
+
 
   public ShooterSubsystem() {
     mIntakeLift.setInverted(false);
@@ -89,6 +92,14 @@ public class ShooterSubsystem extends SubsystemBase {
     mIntakeLiftPID.setReference(0.1, ControlType.kVelocity);
   }
 
+  public boolean getLeftRecieverSwitch()
+  {
+    return !mRecieverLimitSwitchLeft.get();
+  }
+  public boolean getRightRecieverSwitch()
+  {
+    return !mRecieverLimitSwitchRight.get();
+  }
   public boolean getLimitSwitchPressed() {
     return !mAngleLimitSwitch.get();
   }
@@ -96,5 +107,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Limit Switch Value", mAngleLimitSwitch.get());
     SmartDashboard.putNumber("Intake Lift", mIntakeLift.getEncoder().getPosition());
+    SmartDashboard.putBoolean("Reciever Switch Left", getLeftRecieverSwitch());
+    SmartDashboard.putBoolean("Reciever Switch Right", getRightRecieverSwitch());
   }
 }

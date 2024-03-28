@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.LowerIntake;
 import frc.robot.commands.ResetIntake;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -31,7 +32,8 @@ public class RobotContainer {
             () -> mDriveSubsystem.arcadeDrive(mController.getLeftY(), mController.getRightX())));
 
     mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
-    mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
+    //mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
+    mController.b().onTrue(new LowerIntake(mShooterSubsystem));
     mController.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
     mController
         .leftTrigger()

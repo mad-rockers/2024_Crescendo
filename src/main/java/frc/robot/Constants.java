@@ -12,7 +12,7 @@ public class Constants {
     public static int kRightFrontId = 3;
     public static int kRightBackId = 4;
 
-    public static double kDriveSpeed = 0.5;
+    public static double kDriveSpeed = 0.7;
   }
 
   public static class AutonomousConstants {
@@ -25,6 +25,9 @@ public class Constants {
     public static int kFrontShooterPort = 8;
     public static int kRearShooterPort = 9;
     public static int kIntakeLiftId = 7;
+    public static int kIntakeReceiverLeftID = 6;
+    public static int kIntakeReceiverRightID = 7;
+
     public static int kAngleLimitSwitchPort = 8;
 
     public static double kIntakeLiftP = 0.1;
