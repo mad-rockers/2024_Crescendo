@@ -21,8 +21,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   DigitalInput mAngleLimitSwitch = new DigitalInput(ShooterConstants.kAngleLimitSwitchPort);
   DigitalInput mRecieverLimitSwitchLeft = new DigitalInput(ShooterConstants.kIntakeReceiverLeftID);
-  DigitalInput mRecieverLimitSwitchRight = new DigitalInput(ShooterConstants.kIntakeReceiverRightID);
-
+  DigitalInput mRecieverLimitSwitchRight =
+      new DigitalInput(ShooterConstants.kIntakeReceiverRightID);
 
   public ShooterSubsystem() {
     mIntakeLift.setInverted(false);
@@ -92,14 +92,14 @@ public class ShooterSubsystem extends SubsystemBase {
     mIntakeLiftPID.setReference(0.1, ControlType.kVelocity);
   }
 
-  public boolean getLeftRecieverSwitch()
-  {
+  public boolean getLeftRecieverSwitch() {
     return !mRecieverLimitSwitchLeft.get();
   }
-  public boolean getRightRecieverSwitch()
-  {
+
+  public boolean getRightRecieverSwitch() {
     return !mRecieverLimitSwitchRight.get();
   }
+
   public boolean getLimitSwitchPressed() {
     return !mAngleLimitSwitch.get();
   }
