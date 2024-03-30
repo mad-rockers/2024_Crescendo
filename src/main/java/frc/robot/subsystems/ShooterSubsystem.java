@@ -50,8 +50,10 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shoot() {
-    mIntakeRoller.set(-0.25);
-    mRearShooter.set(ShooterConstants.kRearShooterSpeed);
+    if (mFrontShooter.get() > 0) {
+      mIntakeRoller.set(-0.25);
+      mRearShooter.set(ShooterConstants.kRearShooterSpeed);
+    }
   }
 
   public void startFrontShooterMotor() {
@@ -75,6 +77,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setEncoderToNegativeFifty() {
     mIntakeLift.getEncoder().setPosition(-50);
+  }
+
+  public void setEncoderToFifty() {
+    mIntakeLift.getEncoder().setPosition(50);
   }
 
   public void resetIntakeLiftEncoder() {

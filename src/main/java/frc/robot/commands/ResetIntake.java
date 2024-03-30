@@ -24,7 +24,8 @@ public class ResetIntake extends Command {
   public void execute() {
     if (m_ShooterSubsystem.getLimitSwitchPressed()) {
       m_ShooterSubsystem.stopAllMotors();
-      m_ShooterSubsystem.setEncoderToZero();
+      // m_ShooterSubsystem.setEncoderToZero();
+      m_ShooterSubsystem.setEncoderToFifty();
       m_isFinished = true;
     }
   }
