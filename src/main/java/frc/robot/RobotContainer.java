@@ -32,7 +32,6 @@ public class RobotContainer {
             () -> mDriveSubsystem.arcadeDrive(mController.getLeftY(), mController.getRightX())));
 
     mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
-    // mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
     mController.b().onTrue(new LowerIntake(mShooterSubsystem));
     mController.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
     mController
