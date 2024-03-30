@@ -20,9 +20,7 @@ public class LowerIntake extends Command {
 
   @Override
   public void execute() {
-    if (m_ShooterSubsystem.getLeftRecieverSwitch()
-        || m_ShooterSubsystem.getLeftRecieverSwitch()
-        || m_ShooterSubsystem.getLimitSwitchPressed()) {
+    if (m_ShooterSubsystem.getLeftRecieverSwitch() || m_ShooterSubsystem.getRightRecieverSwitch()) {
       m_ShooterSubsystem.stopAllMotors();
       m_isFinished = true;
     }
