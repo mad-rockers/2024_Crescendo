@@ -97,7 +97,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean getRightRecieverSwitch() {
-    return !mRecieverLimitSwitchRight.get();
+    return mRecieverLimitSwitchRight.get();
   }
 
   public boolean getLimitSwitchPressed() {
@@ -105,9 +105,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
+    SmartDashboard.putBoolean("Left Limit Switch Value (Getter)", getLeftRecieverSwitch());
+    SmartDashboard.putBoolean("Right Limit Switch Value (Getter)", getRightRecieverSwitch());
     SmartDashboard.putBoolean("Limit Switch Value", mAngleLimitSwitch.get());
     SmartDashboard.putNumber("Intake Lift", mIntakeLift.getEncoder().getPosition());
-    SmartDashboard.putBoolean("Reciever Switch Left", getLeftRecieverSwitch());
-    SmartDashboard.putBoolean("Reciever Switch Right", getRightRecieverSwitch());
   }
 }
