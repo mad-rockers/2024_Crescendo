@@ -44,16 +44,18 @@ public class RobotContainer {
      * The Y button is disabled until the limit switch and hard stop have been installed.
      */
     // mController.y().onTrue(new ResetIntake(mShooterSubsystem));
-    mController
-        .leftBumper()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToNegativeFifty()));
-    mController
-        .rightBumper()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
+    
 
     // Operator capabilities for adjustments
     mOperator.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
     mOperator.leftTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
+  
+    mOperator
+        .leftBumper()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToNegativeFifty()));
+    mOperator
+        .rightBumper()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
   }
 
   public Command getAutonomousCommand() {
