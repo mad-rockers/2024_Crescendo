@@ -17,6 +17,9 @@ public class RobotContainer {
   CommandXboxController mController =
       new CommandXboxController(ControllerConstants.kDriverControllerPort);
 
+  CommandXboxController mOperator =
+      new CommandXboxController(ControllerConstants.kOperatorControllerPort);  //This is for the second controller the oeprator uses
+
   DriveSubsystem mDriveSubsystem = new DriveSubsystem();
   ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   CameraSubsystem mCameraSubsystem = new CameraSubsystem();
@@ -47,6 +50,10 @@ public class RobotContainer {
     mController
         .rightBumper()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
+
+    // Operator capabilities for adjustments
+    mOperator.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
+    mOperator.leftTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
   }
 
   public Command getAutonomousCommand() {

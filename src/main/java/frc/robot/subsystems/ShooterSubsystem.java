@@ -110,6 +110,33 @@ public class ShooterSubsystem extends SubsystemBase {
     return !mAngleLimitSwitch.get();
   }
 
+  public void decrementIntakeLiftPosition() {
+    // Read the current position
+    double currentPosition = mIntakeLift.getEncoder().getPosition();
+    
+    // Calculate the new position by decrementing the current position by 1
+    double newPosition = currentPosition - 1;
+    
+    // Use the PID controller to move the intake lift to the new position
+    // Assuming you're controlling the position directly, you might use ControlType.kPosition
+    mIntakeLiftPID.setReference(newPosition, ControlType.kPosition);
+    
+  }
+
+  public void incrementIntakeLiftPosition() {
+    // Read the current position
+    double currentPosition = mIntakeLift.getEncoder().getPosition();
+    
+    // Calculate the new position by decrementing the current position by 1
+    double newPosition = currentPosition + 1;
+    
+    // Use the PID controller to move the intake lift to the new position
+    // Assuming you're controlling the position directly, you might use ControlType.kPosition
+    mIntakeLiftPID.setReference(newPosition, ControlType.kPosition);
+    
+}
+
+
   public void periodic() {
     SmartDashboard.putBoolean("Left Limit Switch Value (Getter)", getLeftRecieverSwitch());
     SmartDashboard.putBoolean("Right Limit Switch Value (Getter)", getRightRecieverSwitch());
