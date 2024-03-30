@@ -3,7 +3,6 @@ package frc.robot;
 public class Constants {
   public static class ControllerConstants {
     public static int kDriverControllerPort = 0;
-    // public static double kDriveSpeed = 0.5;
   }
 
   public static class DriveConstants {
