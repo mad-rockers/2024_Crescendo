@@ -19,7 +19,10 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax mIntakeLift = new CANSparkMax(ShooterConstants.kIntakeLiftId, MotorType.kBrushless);
   SparkPIDController mIntakeLiftPID = mIntakeLift.getPIDController();
 
-  DigitalInput mLimitSwitch = new DigitalInput(ShooterConstants.kLimitSwitchPort);
+  DigitalInput mAngleLimitSwitch = new DigitalInput(ShooterConstants.kAngleLimitSwitchPort);
+  DigitalInput mRecieverLimitSwitchLeft = new DigitalInput(ShooterConstants.kIntakeReceiverLeftID);
+  DigitalInput mRecieverLimitSwitchRight =
+      new DigitalInput(ShooterConstants.kIntakeReceiverRightID);
 
   public ShooterSubsystem() {
     mIntakeLift.setInverted(false);
@@ -39,19 +42,18 @@ public class ShooterSubsystem extends SubsystemBase {
   public void deployIntake() {
     mIntakeRoller.set(ShooterConstants.kIntakeRollerSpeed);
     mIntakeLiftPID.setReference(ShooterConstants.kIntakeDownPosition, ControlType.kPosition);
-    // mIntakeLift.set(0.2);
   }
 
   public void stowIntake() {
     mIntakeRoller.stopMotor();
     mIntakeLiftPID.setReference(ShooterConstants.kIntakeUpPosition, ControlType.kPosition);
-    // mIntakeLift.set(-0.2);
   }
 
   public void shoot() {
-    mIntakeRoller.set(-0.25);
-    // mFrontShooter.set(ShooterConstants.kFrontShooterSpeed);
-    mRearShooter.set(ShooterConstants.kRearShooterSpeed);
+    if (mFrontShooter.get() > 0) {
+      mIntakeRoller.set(-0.25);
+      mRearShooter.set(ShooterConstants.kRearShooterSpeed);
+    }
   }
 
   public void startFrontShooterMotor() {
@@ -69,20 +71,49 @@ public class ShooterSubsystem extends SubsystemBase {
     mRearShooter.stopMotor();
   }
 
-  public void getIntakeMostOfTheWayDown() {
-    mIntakeLiftPID.setReference(-ShooterConstants.kIntakeUpPosition + 0.5, ControlType.kPosition);
+  public void setEncoderToZero() {
+    mIntakeLift.getEncoder().setPosition(0);
   }
 
-  public void reset() {
-    mIntakeLift.getEncoder().setPosition(0);
+  public void setEncoderToNegativeFifty() {
+    mIntakeLift.getEncoder().setPosition(-50);
+  }
 
-    // while (!mLimitSwitch.get()) {
-    //   mIntakeLiftPID.setReference(-0.1, ControlType.kVelocity);
-    // }
+  public void setEncoderToFifty() {
+    mIntakeLift.getEncoder().setPosition(50);
+  }
+
+  public void resetIntakeLiftEncoder() {
+    /*
+     * As of prototyping, the limit switch is set to be "false" when depressed.
+     */
+    while (mAngleLimitSwitch.get()) {
+      mIntakeLiftPID.setReference(0.1, ControlType.kVelocity);
+    }
+
+    mIntakeLift.getEncoder().setPosition(0);
+  }
+
+  public void liftIntakeForReset() {
+    mIntakeLiftPID.setReference(0.1, ControlType.kVelocity);
+  }
+
+  public boolean getLeftRecieverSwitch() {
+    return !mRecieverLimitSwitchLeft.get();
+  }
+
+  public boolean getRightRecieverSwitch() {
+    return mRecieverLimitSwitchRight.get();
+  }
+
+  public boolean getLimitSwitchPressed() {
+    return !mAngleLimitSwitch.get();
   }
 
   public void periodic() {
-    SmartDashboard.putBoolean("Limit Switch Value", mLimitSwitch.get());
+    SmartDashboard.putBoolean("Left Limit Switch Value (Getter)", getLeftRecieverSwitch());
+    SmartDashboard.putBoolean("Right Limit Switch Value (Getter)", getRightRecieverSwitch());
+    SmartDashboard.putBoolean("Limit Switch Value", mAngleLimitSwitch.get());
     SmartDashboard.putNumber("Intake Lift", mIntakeLift.getEncoder().getPosition());
   }
 }

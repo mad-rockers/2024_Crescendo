@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.LowerIntake;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -27,22 +28,25 @@ public class RobotContainer {
   private void configureBindings() {
     mDriveSubsystem.setDefaultCommand(
         mDriveSubsystem.run(
-            () ->
-                mDriveSubsystem.arcadeDrive(
-                    mController.getLeftY(),
-                    mController.getRightX())));
+            () -> mDriveSubsystem.arcadeDrive(mController.getLeftY(), mController.getRightX())));
 
     mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
-    mController.b().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.deployIntake()));
+    mController.b().onTrue(new LowerIntake(mShooterSubsystem));
     mController.rightTrigger().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.shoot()));
     mController
         .leftTrigger()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
     mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
-    mController.leftBumper().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.reset()));
+    /*
+     * The Y button is disabled until the limit switch and hard stop have been installed.
+     */
+    // mController.y().onTrue(new ResetIntake(mShooterSubsystem));
+    mController
+        .leftBumper()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToNegativeFifty()));
     mController
         .rightBumper()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.getIntakeMostOfTheWayDown()));
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
   }
 
   public Command getAutonomousCommand() {
