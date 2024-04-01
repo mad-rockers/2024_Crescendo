@@ -17,6 +17,11 @@ public class RobotContainer {
   CommandXboxController mController =
       new CommandXboxController(ControllerConstants.kDriverControllerPort);
 
+  CommandXboxController mOperator =
+      new CommandXboxController(
+          ControllerConstants
+              .kOperatorControllerPort); // This is for the second controller the oeprator uses
+
   DriveSubsystem mDriveSubsystem = new DriveSubsystem();
   ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   CameraSubsystem mCameraSubsystem = new CameraSubsystem();
@@ -41,10 +46,19 @@ public class RobotContainer {
      * The Y button is disabled until the limit switch and hard stop have been installed.
      */
     // mController.y().onTrue(new ResetIntake(mShooterSubsystem));
-    mController
+
+    // Operator capabilities for adjustments
+    mOperator
+        .leftTrigger()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
+    mOperator
+        .rightTrigger()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
+
+    mOperator
         .leftBumper()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToNegativeFifty()));
-    mController
+    mOperator
         .rightBumper()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
   }
