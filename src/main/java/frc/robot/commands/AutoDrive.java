@@ -8,7 +8,11 @@ public class AutoDrive extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private DriveSubsystem m_NeoMotorDriveSystem;
 
-  private static final double MOVE_SPEED = 1.0;
+  /*
+   * Note: the MOVE_SPEED affects distance travelled.
+   * The robot will coast, so it'll go farther than the targetDistance.
+   */
+  private static final double MOVE_SPEED = 0.85;
   private double currentDistance_in = 0;
   private double targetDistance = 72;
   private int isTargetForward;
