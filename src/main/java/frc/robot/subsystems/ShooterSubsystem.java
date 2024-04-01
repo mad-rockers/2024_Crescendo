@@ -71,6 +71,45 @@ public class ShooterSubsystem extends SubsystemBase {
     mRearShooter.stopMotor();
   }
 
+  public void stopAllMotors(String except) {
+    boolean stopFrontShooter = true;
+    boolean stopRearShooter = true;
+    boolean stopIntakeLift = true;
+    boolean stopIntakeRoller = true;
+
+    if (except.contains("front_shooter_motor")) {
+      stopFrontShooter = false;
+    }
+
+    if (except.contains("rear_shooter_motor")) {
+      stopRearShooter = false;
+    }
+
+    if (except.contains("intake_lift_motor")) {
+      stopIntakeLift = false;
+    }
+
+    if (except.contains("stop_intake_roller")) {
+      stopIntakeRoller = false;
+    }
+
+    if (stopFrontShooter) {
+      mFrontShooter.stopMotor();
+    }
+
+    if (stopRearShooter) {
+      mRearShooter.stopMotor();
+    }
+
+    if (stopIntakeLift) {
+      mIntakeLift.stopMotor();
+    }
+
+    if (stopIntakeRoller) {
+      mIntakeRoller.stopMotor();
+    }
+  }
+
   public void setEncoderToZero() {
     mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(0);

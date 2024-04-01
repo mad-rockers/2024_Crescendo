@@ -64,6 +64,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Autos.moveBack(mDriveSubsystem);
+    return Autos.shootThenMoveBack(mShooterSubsystem, mDriveSubsystem);
   }
 }
