@@ -36,7 +36,7 @@ public class CameraSubsystem extends SubsystemBase {
    * Constant heights for various parts of the distance equation.
    */
   private static final double CAMERA_HEIGHT =
-      28.25; // Height of the camera from the ground in inches
+      26.25; // Height of the camera from the ground in inches
   private static final double CAMERA_ANGLE =
       Constants.CameraConstants.CameraData[4]; // Angle of the camera in degrees
 
@@ -145,8 +145,14 @@ public class CameraSubsystem extends SubsystemBase {
      */
     if (getTagID() < 0) return 0;
 
+    double heightOfAprilTag = -1;
+    if (getTagID() >= 1 && getTagID() <= 10) {
+      heightOfAprilTag = Constants.FieldConstants.AprilTagHeights_in[getTagID()] + 5.25;
+    } else { //IDs 11-16
+      heightOfAprilTag = Constants.FieldConstants.AprilTagHeights_in[getTagID()] + 4.5;
+    }
     double heightDifference =
-        Constants.FieldConstants.AprilTagHeights_in[getTagID()] - CAMERA_HEIGHT;
+        heightOfAprilTag - CAMERA_HEIGHT;
 
     /*
      * distance = height / tan(angle)
@@ -169,6 +175,6 @@ public class CameraSubsystem extends SubsystemBase {
      * Display the distance (in inches) to the target. If there is no target visible, then this should display a "-1".
      */
     SmartDashboard.putNumber("Distance to Target:", getTagDistance2D());
-    SmartDashboard.putNumber("Backup Dist to T1arget", getTagDistanceBackup());
+    SmartDashboard.putNumber("Backup Dist to Target", getTagDistanceBackup());
   }
 }
