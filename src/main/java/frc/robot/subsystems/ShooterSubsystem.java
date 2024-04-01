@@ -72,14 +72,17 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setEncoderToZero() {
+    mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(0);
   }
 
   public void setEncoderToNegativeFifty() {
+    mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(-50);
   }
 
   public void setEncoderToFifty() {
+    mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(50);
   }
 

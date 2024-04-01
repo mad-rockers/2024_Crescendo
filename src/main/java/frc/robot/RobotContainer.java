@@ -49,10 +49,10 @@ public class RobotContainer {
 
     // Operator capabilities for adjustments
     mOperator
-        .rightTrigger()
+        .leftTrigger()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
     mOperator
-        .leftTrigger()
+        .rightTrigger()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
 
     mOperator
