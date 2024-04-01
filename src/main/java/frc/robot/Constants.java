@@ -26,6 +26,7 @@ public class Constants {
 
   public static class ControllerConstants {
     public static int kDriverControllerPort = 0;
+    public static int kOperatorControllerPort = 1;
   }
 
   public static class DriveConstants {

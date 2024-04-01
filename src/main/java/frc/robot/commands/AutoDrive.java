@@ -8,17 +8,19 @@ public class AutoDrive extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private DriveSubsystem m_NeoMotorDriveSystem;
 
-  private double moveSpeed;
+  /*
+   * Note: the MOVE_SPEED affects distance travelled.
+   * The robot will coast, so it'll go farther than the targetDistance.
+   */
+  private static final double MOVE_SPEED = 0.85;
   private double currentDistance_in = 0;
-  private double targetDistance_in;
+  private double targetDistance = 72;
   private int isTargetForward;
 
   private boolean reachedTarget = false;
 
-  public AutoDrive(DriveSubsystem neoMotorDriveSystem, double speed, double distance_ft) {
+  public AutoDrive(DriveSubsystem neoMotorDriveSystem) {
     m_NeoMotorDriveSystem = neoMotorDriveSystem;
-    targetDistance_in = distance_ft * 12;
-    moveSpeed = speed;
     addRequirements(m_NeoMotorDriveSystem);
   }
 
@@ -26,16 +28,16 @@ public class AutoDrive extends Command {
   public void initialize() {
     m_NeoMotorDriveSystem.resetDistanceTraveled();
     isTargetForward =
-        (int) (Math.abs(targetDistance_in) / targetDistance_in); // Gets the sign of the distance
-    targetDistance_in = targetDistance_in * isTargetForward; // Absolutes the distance
+        (int) (Math.abs(targetDistance) / targetDistance); // Gets the sign of the distance
+    targetDistance = targetDistance * isTargetForward; // Absolutes the distance
   }
 
   @Override
   public void execute() {
     currentDistance_in += m_NeoMotorDriveSystem.getDistanceTraveled();
-    m_NeoMotorDriveSystem.arcadeDrive(moveSpeed, 0);
+    m_NeoMotorDriveSystem.arcadeDrive(MOVE_SPEED, 0);
 
-    if (currentDistance_in > targetDistance_in) reachedTarget = true;
+    if (currentDistance_in > targetDistance) reachedTarget = true;
 
     SmartDashboard.putNumber("Current Distance (Inches):", currentDistance_in);
   }
