@@ -72,14 +72,17 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setEncoderToZero() {
+    mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(0);
   }
 
   public void setEncoderToNegativeFifty() {
+    mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(-50);
   }
 
   public void setEncoderToFifty() {
+    mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(50);
   }
 
@@ -108,6 +111,30 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean getLimitSwitchPressed() {
     return !mAngleLimitSwitch.get();
+  }
+
+  public void decrementIntakeLiftPosition() {
+    // Read the current position
+    double currentPosition = mIntakeLift.getEncoder().getPosition();
+
+    // Calculate the new position by decrementing the current position by 1
+    double newPosition = currentPosition - 1;
+
+    // Use the PID controller to move the intake lift to the new position
+    // Assuming you're controlling the position directly, you might use ControlType.kPosition
+    mIntakeLiftPID.setReference(newPosition, ControlType.kPosition);
+  }
+
+  public void incrementIntakeLiftPosition() {
+    // Read the current position
+    double currentPosition = mIntakeLift.getEncoder().getPosition();
+
+    // Calculate the new position by decrementing the current position by 1
+    double newPosition = currentPosition + 1;
+
+    // Use the PID controller to move the intake lift to the new position
+    // Assuming you're controlling the position directly, you might use ControlType.kPosition
+    mIntakeLiftPID.setReference(newPosition, ControlType.kPosition);
   }
 
   public void periodic() {
