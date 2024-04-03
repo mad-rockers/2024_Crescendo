@@ -31,11 +31,9 @@ public class LowerIntake extends Command {
         && m_ShooterSubsystem.getRightRecieverSwitch()) {
       m_Timer.start();
       m_isTimerStarted = true;
-    } else if (m_isTimerStarted) {
-      if (m_Timer.get() > 0.5) {
-        m_ShooterSubsystem.stopAllMotors("front_shooter_motor");
-        m_isFinished = true;
-      }
+    } else if (m_isTimerStarted && m_Timer.get() > 0.5) {
+      m_ShooterSubsystem.stopAllMotors("front_shooter_motor");
+      m_isFinished = true;
     }
   }
 
