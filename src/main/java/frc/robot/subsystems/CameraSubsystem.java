@@ -5,48 +5,136 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CameraSubsystem extends SubsystemBase {
+  /*
+   * Helpful Resources:
+   * Limelight Docs: https://readthedocs.org/projects/limelight/downloads/pdf/latest/
+   * Limelight Complete NetworkTable: https://docs.limelightvision.io/docs/docs-limelight/apis/complete-networktables-api
+   */
+
+  // NetworkTable entries for Limelight
+  private final NetworkTable m_limelightTable =
+      NetworkTableInstance.getDefault().getTable("limelight");
+
+  // Angle info
+  // tx -> angle left or right from the camera
+  // ty -> angle up for down from the camera
+  // ta -> area on screen the apriltag takes up
+  // tv -> check whether target is valid
+  private final NetworkTableEntry m_tx = m_limelightTable.getEntry("tx");
+  private final NetworkTableEntry m_ty = m_limelightTable.getEntry("ty");
+  private final NetworkTableEntry m_ta = m_limelightTable.getEntry("ta");
+  private final NetworkTableEntry m_tv = m_limelightTable.getEntry("tv");
+  private final NetworkTableEntry m_tid = m_limelightTable.getEntry("tid");
+
+  private final NetworkTableEntry m_TargetPoseRS =
+      m_limelightTable.getEntry("targetpose_robotspace");
 
   /*
    * Constant heights for various parts of the distance equation.
    */
   private static final double CAMERA_HEIGHT =
-      29.0; // Height of the camera from the ground in inches
-  private static final double TARGET_HEIGHT =
-      56.75; // Height of the target from the ground in inches
-  private static final double CAMERA_ANGLE = 6.0; // Angle of the camera in degrees
-
-  // NetworkTable entries for Limelight
-  private final NetworkTable limelightTable;
-  /*
-   * tv = whether or not the camera sees a valid target.
-   */
-  private NetworkTableEntry tv;
-  /*
-   * ty = the vertical offset, in degrees.
-   */
-  private NetworkTableEntry ty;
+      26.25; // Height of the camera from the ground in inches
+  private static final double CAMERA_ANGLE =
+      Constants.CameraConstants.CameraData[4]; // Angle of the camera in degrees
 
   public CameraSubsystem() {
-    limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-    tv = limelightTable.getEntry("tv");
-    ty = limelightTable.getEntry("ty");
+
+    // All of these values need to be in meters.
+
+    NetworkTableInstance.getDefault()
+        .getTable("limelight")
+        .getEntry("camerapose_robotspace_set")
+        .setDoubleArray(Constants.CameraConstants.CameraData);
   }
 
-  public boolean isValidTargetSeen() {
-    return tv.getDouble(0.0) == 1.0;
+  /// GETTERS///
+
+  /*
+   * NOTE:
+   * All of these values should return from the center of the robot assuming that the cameraData has been set up properly, see above.
+   * All units will be in meters.
+   *
+   */
+
+  // Angle Offsets
+  public double getXAngleOffset() {
+    return m_tx.getDouble(0.0);
   }
 
-  public double calculateDistanceToTarget() {
-    if (!isValidTargetSeen()) {
+  public double getYAngleOffset() {
+    return m_ty.getDouble(0.0);
+  }
+
+  // Distance of the april tag horizontally from the robot.
+  public double getXDistOffset() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[0];
+  }
+
+  // Distance of the tag vertically from the robot.
+  public double getYDistOffset() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[1];
+  }
+
+  // Ditsance of the tag forward from the robot.
+  public double getZDistOffset() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[2];
+  }
+
+  // Pitch of the tag
+  public double getXRotation() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[3];
+  }
+
+  // Yaw of the tag
+  public double getYRotation() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[4];
+  }
+
+  // Roll of the tag
+  public double getZRotation() {
+    return m_TargetPoseRS.getDoubleArray(new double[6])[5];
+  }
+
+  public double getVisualArea() {
+    return m_ta.getDouble(0.0);
+  }
+
+  public boolean isTargetVisible() {
+    return m_tv.getDouble(0) == 1;
+  }
+
+  public int getTagID() {
+    return (int) (m_tid.getInteger(0));
+  }
+
+  /// DISTANCES
+  public double getTagDistance2D() {
+    double distance =
+        Math.sqrt(getXDistOffset() * getXDistOffset() + getZDistOffset() * getZDistOffset());
+    return distance;
+  }
+
+  public double getTagDistance3D() {
+    double distance =
+        Math.sqrt(
+            getXDistOffset() * getXDistOffset()
+                + getYDistOffset() * getYDistOffset()
+                + getZDistOffset() * getZDistOffset());
+    return distance;
+  }
+
+  public double getTagDistanceBackup() {
+    if (!isTargetVisible()) {
       /*
        * Return a negative number as another indicator that the target is not visible.
        */
       return -1;
     }
 
-    double targetOffsetAngleVertical = ty.getDouble(0.0);
+    double targetOffsetAngleVertical = getYAngleOffset();
     /*
      * Adjust calculation to account for the vertical angle of the camera.
      */
@@ -55,7 +143,16 @@ public class CameraSubsystem extends SubsystemBase {
     /*
      * Account for the height difference between the camera and the target, not just the target's height from the ground.
      */
-    double heightDifference = TARGET_HEIGHT - CAMERA_HEIGHT;
+    if (getTagID() < 0) return 0;
+
+    double heightOfAprilTag = -1;
+    if (getTagID() >= 1 && getTagID() <= 10) {
+      heightOfAprilTag = Constants.FieldConstants.AprilTagHeights_in[getTagID()] + 5.25;
+    } else { //IDs 11-16
+      heightOfAprilTag = Constants.FieldConstants.AprilTagHeights_in[getTagID()] + 4.5;
+    }
+    double heightDifference =
+        heightOfAprilTag - CAMERA_HEIGHT;
 
     /*
      * distance = height / tan(angle)
@@ -68,10 +165,16 @@ public class CameraSubsystem extends SubsystemBase {
     /*
      * Can the target be seen?
      */
-    SmartDashboard.putBoolean("Can See Target?", isValidTargetSeen());
+    SmartDashboard.putBoolean("Can See Target?", isTargetVisible());
+    SmartDashboard.putNumber("Tag ID", getTagID());
+    SmartDashboard.putNumber("Tag Height (P)", getYDistOffset() * 3.281 * 12);
+    if (getTagID() > 0)
+      SmartDashboard.putNumber(
+          "Tag Height (A)", Constants.FieldConstants.AprilTagHeights_in[getTagID()]);
     /*
      * Display the distance (in inches) to the target. If there is no target visible, then this should display a "-1".
      */
-    SmartDashboard.putNumber("Distance to Target:", calculateDistanceToTarget());
+    SmartDashboard.putNumber("Distance to Target:", getTagDistance2D());
+    SmartDashboard.putNumber("Backup Dist to Target", getTagDistanceBackup());
   }
 }

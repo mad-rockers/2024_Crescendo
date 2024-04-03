@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.LowerIntake;
+import frc.robot.commands.ResetIntake;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -42,10 +43,7 @@ public class RobotContainer {
         .leftTrigger()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
     mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
-    /*
-     * The Y button is disabled until the limit switch and hard stop have been installed.
-     */
-    // mController.y().onTrue(new ResetIntake(mShooterSubsystem));
+    mController.y().onTrue(new ResetIntake(mShooterSubsystem));
 
     // Operator capabilities for adjustments
     mOperator
