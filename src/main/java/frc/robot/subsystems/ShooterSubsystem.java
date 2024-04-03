@@ -110,6 +110,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
+  public void goToPositionTen() {
+    mIntakeLiftPID.setReference(10, ControlType.kPosition);
+  }
+
   public void setEncoderToZero() {
     mIntakeLift.stopMotor();
     mIntakeLift.getEncoder().setPosition(0);
