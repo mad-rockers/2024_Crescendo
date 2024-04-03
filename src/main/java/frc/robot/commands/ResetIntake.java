@@ -17,6 +17,7 @@ public class ResetIntake extends Command {
   @Override
   public void initialize() {
     m_ShooterSubsystem.stopAllMotors();
+    m_ShooterSubsystem.setEncoderToNegativeFifty();
     m_ShooterSubsystem.goToPositionTen();
   }
 
