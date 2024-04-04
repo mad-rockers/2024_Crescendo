@@ -19,7 +19,19 @@ public final class Autos {
   public static Command shootThenMoveBack(
       ShooterSubsystem shooterSubsystem, DriveSubsystem neoMotorDriveSystem) {
     return Commands.sequence(
-        new AutoShoot(shooterSubsystem, neoMotorDriveSystem), new AutoDrive(neoMotorDriveSystem));
+        new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
+        new AutoDrive(neoMotorDriveSystem, 0.85, 72));
+  }
+
+  public static Command shootMoveGrabMoveShoot(
+      ShooterSubsystem shooterSubsystem, DriveSubsystem neoMotorDriveSystem) {
+    return Commands.sequence(
+        new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
+        shooterSubsystem.runOnce(() -> shooterSubsystem.deployIntake()),
+        new AutoDrive(neoMotorDriveSystem, 0.85, 72),
+        new AutoDrive(neoMotorDriveSystem, 0.85, -72),
+        shooterSubsystem.runOnce(() -> shooterSubsystem.stowIntake()),
+        new AutoShoot(shooterSubsystem, neoMotorDriveSystem));
   }
 
   private Autos() {

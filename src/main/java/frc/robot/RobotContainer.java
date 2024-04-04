@@ -33,7 +33,7 @@ public class RobotContainer {
   private final Command m_shootAndMoveBack =
       Autos.shootThenMoveBack(mShooterSubsystem, mDriveSubsystem);
 
-  private final Command m_justMoveBack = new AutoDrive(mDriveSubsystem);
+  private final Command m_justMoveBack = new AutoDrive(mDriveSubsystem, 0.85, 72);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
