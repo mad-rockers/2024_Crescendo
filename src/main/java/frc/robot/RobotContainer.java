@@ -33,6 +33,9 @@ public class RobotContainer {
   private final Command m_shootAndMoveBack =
       Autos.shootThenMoveBack(mShooterSubsystem, mDriveSubsystem);
 
+  private final Command m_shootMoveShootMoveShoot =
+      Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
+
   private final Command m_justMoveBack = new AutoDrive(mDriveSubsystem, 0.85, 72);
 
   // A chooser for autonomous commands
@@ -42,6 +45,7 @@ public class RobotContainer {
     // Add commands to the autonomous command chooser
     m_chooser.setDefaultOption("Shoot and Move Back", m_shootAndMoveBack);
     m_chooser.addOption("Just Move Back", m_justMoveBack);
+    m_chooser.addOption("Go for Broke", m_shootMoveShootMoveShoot);
 
     // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
