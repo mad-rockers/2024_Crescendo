@@ -88,7 +88,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // return m_chooser.getSelected();
-    return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
+    return m_chooser.getSelected();
+    // return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
   }
 }
