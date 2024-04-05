@@ -29,11 +29,11 @@ public class AutoShoot extends Command {
     mDriveSubsystem.arcadeDrive(0, 0);
     mShooterSubsystem.startFrontShooterMotor();
 
-    if (mTimer.get() > 2) {
+    if (mTimer.get() > 1.5) {
       mShooterSubsystem.shoot();
     }
 
-    if (mTimer.get() > 5) {
+    if (mTimer.get() > 3.5) {
       mIsFinished = true;
     }
   }

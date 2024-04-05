@@ -20,20 +20,24 @@ public final class Autos {
       ShooterSubsystem shooterSubsystem, DriveSubsystem neoMotorDriveSystem) {
     return Commands.sequence(
         new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
-        new AutoDrive(neoMotorDriveSystem, 0.85, 72));
+        new AutoDrive(neoMotorDriveSystem, 0.85, 96));
   }
 
   public static Command shootMoveGrabMoveShoot(
       ShooterSubsystem shooterSubsystem, DriveSubsystem neoMotorDriveSystem) {
     return Commands.sequence(
-        new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
-        shooterSubsystem.runOnce(() -> shooterSubsystem.deployIntake()),
-        new Wait(2),
+        new AutoShoot(shooterSubsystem, neoMotorDriveSystem), // 5.5 seconds
+        shooterSubsystem.runOnce(() -> shooterSubsystem.deployIntake()), // 1.0 seconds
+        new Wait(0.5),
         new AutoDrive(neoMotorDriveSystem, 0.95, 72),
         new AutoDrive(neoMotorDriveSystem, 0.75, -72),
-        new Wait(1),
+        // new Wait(1),
         shooterSubsystem.runOnce(() -> shooterSubsystem.stowIntake()),
-        new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
+        new Wait(0.5),
+        // new LowerIntake(shooterSubsystem),
+        // new Wait(0.15),
+        // shooterSubsystem.runOnce(() -> shooterSubsystem.stowIntake()),
+        new AutoShoot(shooterSubsystem, neoMotorDriveSystem), // 5.5 seconds
         new AutoDrive(neoMotorDriveSystem, 0.85, 72));
   }
 
