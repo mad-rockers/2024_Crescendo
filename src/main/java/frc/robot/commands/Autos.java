@@ -28,10 +28,13 @@ public final class Autos {
     return Commands.sequence(
         new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
         shooterSubsystem.runOnce(() -> shooterSubsystem.deployIntake()),
-        new AutoDrive(neoMotorDriveSystem, 0.85, 72),
-        new AutoDrive(neoMotorDriveSystem, 0.85, -72),
+        new Wait(2),
+        new AutoDrive(neoMotorDriveSystem, 0.95, 72),
+        new AutoDrive(neoMotorDriveSystem, 0.75, -72),
+        new Wait(1),
         shooterSubsystem.runOnce(() -> shooterSubsystem.stowIntake()),
-        new AutoShoot(shooterSubsystem, neoMotorDriveSystem));
+        new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
+        new AutoDrive(neoMotorDriveSystem, 0.85, 72));
   }
 
   private Autos() {

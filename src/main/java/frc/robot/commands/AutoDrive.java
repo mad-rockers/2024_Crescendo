@@ -15,7 +15,7 @@ public class AutoDrive extends Command {
   private double moveSpeed;
   private double currentDistance_in = 0;
   private double targetDistance;
-  private int isTargetForward;
+  // private int isTargetForward;
 
   private boolean reachedTarget = false;
 
@@ -30,17 +30,29 @@ public class AutoDrive extends Command {
   @Override
   public void initialize() {
     m_NeoMotorDriveSystem.resetDistanceTraveled();
-    isTargetForward =
-        (int) (Math.abs(targetDistance) / targetDistance); // Gets the sign of the distance
-    targetDistance = targetDistance * isTargetForward; // Absolutes the distance
+    // isTargetForward =
+    //     (int) (Math.abs(targetDistance) / targetDistance); // Gets the sign of the distance
+    // targetDistance = targetDistance * isTargetForward; // Absolutes the distance
   }
 
   @Override
   public void execute() {
     currentDistance_in += m_NeoMotorDriveSystem.getDistanceTraveled();
-    m_NeoMotorDriveSystem.arcadeDrive(moveSpeed, 0);
+    if (targetDistance > 0) {
+      m_NeoMotorDriveSystem.arcadeDrive(moveSpeed, 0);
+    } else {
+      m_NeoMotorDriveSystem.arcadeDrive(-moveSpeed, 0);
+    }
 
-    if (currentDistance_in > targetDistance) reachedTarget = true;
+    if (targetDistance > 0) {
+      if (currentDistance_in > targetDistance) {
+        reachedTarget = true;
+      }
+    } else {
+      if (currentDistance_in < targetDistance) {
+        reachedTarget = true;
+      }
+    }
 
     SmartDashboard.putNumber("Current Distance (Inches):", currentDistance_in);
   }
@@ -48,6 +60,8 @@ public class AutoDrive extends Command {
   @Override
   public void end(boolean interrupted) {
     m_NeoMotorDriveSystem.stopMotors();
+    reachedTarget = false;
+    currentDistance_in = 0;
   }
 
   @Override

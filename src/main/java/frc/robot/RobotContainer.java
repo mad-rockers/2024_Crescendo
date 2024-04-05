@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoDrive;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Autos;
 import frc.robot.commands.LowerIntake;
 import frc.robot.commands.ResetIntake;
@@ -38,14 +39,17 @@ public class RobotContainer {
 
   private final Command m_justMoveBack = new AutoDrive(mDriveSubsystem, 0.85, 72);
 
+  private final Command m_justShoot = new AutoShoot(mShooterSubsystem, mDriveSubsystem);
+
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public RobotContainer() {
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Shoot and Move Back", m_shootAndMoveBack);
+    m_chooser.setDefaultOption("Go for Broke", m_shootMoveShootMoveShoot);
     m_chooser.addOption("Just Move Back", m_justMoveBack);
-    m_chooser.addOption("Go for Broke", m_shootMoveShootMoveShoot);
+    m_chooser.addOption("Shoot Once and Move Back", m_shootAndMoveBack);
+    m_chooser.addOption("Just Shoot", m_justShoot);
 
     // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
@@ -84,6 +88,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
+    // return m_chooser.getSelected();
+    return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
   }
 }

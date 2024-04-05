@@ -41,6 +41,9 @@ public class AutoShoot extends Command {
   @Override
   public void end(boolean interrupted) {
     mShooterSubsystem.stopAllMotors();
+    mIsFinished = false;
+    mTimer.stop();
+    mTimer.reset();
   }
 
   @Override
