@@ -57,7 +57,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void startFrontShooterMotor() {
-    mFrontShooter.set(ShooterConstants.kFrontShooterSpeed);
+    mFrontShooter.setVoltage(ShooterConstants.kFrontShooterSpeed * 12.5);
   }
 
   public void intake() {
