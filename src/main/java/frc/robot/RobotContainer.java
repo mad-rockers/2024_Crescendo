@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.AutoDrive;
+import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Autos;
 import frc.robot.commands.LowerIntake;
 import frc.robot.commands.ResetIntake;
@@ -27,7 +31,29 @@ public class RobotContainer {
   ShooterSubsystem mShooterSubsystem = new ShooterSubsystem();
   CameraSubsystem mCameraSubsystem = new CameraSubsystem();
 
+  private final Command m_shootAndMoveBack =
+      Autos.shootThenMoveBack(mShooterSubsystem, mDriveSubsystem);
+
+  private final Command m_shootMoveShootMoveShoot =
+      Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
+
+  private final Command m_justMoveBack = new AutoDrive(mDriveSubsystem, 0.85, 72);
+
+  private final Command m_justShoot = new AutoShoot(mShooterSubsystem, mDriveSubsystem);
+
+  // A chooser for autonomous commands
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
   public RobotContainer() {
+    // Add commands to the autonomous command chooser
+    m_chooser.setDefaultOption("Go for Broke", m_shootMoveShootMoveShoot);
+    m_chooser.addOption("Just Move Back", m_justMoveBack);
+    m_chooser.addOption("Shoot Once and Move Back", m_shootAndMoveBack);
+    m_chooser.addOption("Just Shoot", m_justShoot);
+
+    // Put the chooser on the dashboard
+    SmartDashboard.putData(m_chooser);
+
     configureBindings();
   }
 
@@ -35,6 +61,9 @@ public class RobotContainer {
     mDriveSubsystem.setDefaultCommand(
         mDriveSubsystem.run(
             () -> mDriveSubsystem.arcadeDrive(mController.getLeftY(), mController.getRightX())));
+
+    mShooterSubsystem.setDefaultCommand(
+        mShooterSubsystem.run(() -> mShooterSubsystem.startFrontShooterMotor()));
 
     mController.a().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stowIntake()));
     mController.b().onTrue(new LowerIntake(mShooterSubsystem));
@@ -62,6 +91,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Autos.shootThenMoveBack(mShooterSubsystem, mDriveSubsystem);
+    return m_chooser.getSelected();
+    // return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
   }
 }

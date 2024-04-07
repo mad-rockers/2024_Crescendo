@@ -148,11 +148,10 @@ public class CameraSubsystem extends SubsystemBase {
     double heightOfAprilTag = -1;
     if (getTagID() >= 1 && getTagID() <= 10) {
       heightOfAprilTag = Constants.FieldConstants.AprilTagHeights_in[getTagID()] + 5.25;
-    } else { //IDs 11-16
+    } else { // IDs 11-16
       heightOfAprilTag = Constants.FieldConstants.AprilTagHeights_in[getTagID()] + 4.5;
     }
-    double heightDifference =
-        heightOfAprilTag - CAMERA_HEIGHT;
+    double heightDifference = heightOfAprilTag - CAMERA_HEIGHT;
 
     /*
      * distance = height / tan(angle)
