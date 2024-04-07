@@ -20,7 +20,7 @@ public final class Autos {
       ShooterSubsystem shooterSubsystem, DriveSubsystem neoMotorDriveSystem) {
     return Commands.sequence(
         new AutoShoot(shooterSubsystem, neoMotorDriveSystem),
-        new AutoDrive(neoMotorDriveSystem, 0.85, 96));
+        new AutoDrive(neoMotorDriveSystem, 0.85, 108));
   }
 
   public static Command shootMoveGrabMoveShoot(
