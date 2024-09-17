@@ -33,7 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
     mIntakeLiftPID.setP(ShooterConstants.kIntakeLiftP);
     mIntakeLiftPID.setI(0);
     mIntakeLiftPID.setD(0);
-    mIntakeLiftPID.setOutputRange(-0.3, 0.3);
+    mIntakeLiftPID.setOutputRange(
+        ShooterConstants.INTAKE_LIFT_PID_MIN_OUTPUT, ShooterConstants.INTAKE_LIFT_PID_MAX_OUTPUT);
 
     mFrontShooter.setInverted(true);
     mRearShooter.setInverted(true);

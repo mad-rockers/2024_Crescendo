@@ -55,6 +55,8 @@ public class Constants {
 
     public static final double kIntakeLiftP = 0.1;
 
+    public static final double INTAKE_LIFT_PID_MIN_OUTPUT = -0.3;
+    public static final double INTAKE_LIFT_PID_MAX_OUTPUT = 0.3;
     public static final double kIntakeUpPosition = 0;
     public static final double kIntakeDownPosition = -50;
     public static final double kIntakeRollerSpeed = 1;
