@@ -1,13 +1,13 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class WaveIntake extends CommandBase {
+public class WaveIntake extends Command {
   private final ShooterSubsystem mShooterSubsystem;
   private boolean isLifted = false;
   private long lastToggleTime = 0;
-  private static final long TOGGLE_INTERVAL_MS = 1000; // 1 second interval
 
   public WaveIntake(ShooterSubsystem shooterSubsystem) {
     mShooterSubsystem = shooterSubsystem;
@@ -22,7 +22,7 @@ public class WaveIntake extends CommandBase {
   @Override
   public void execute() {
     long currentTime = System.currentTimeMillis();
-    if (currentTime - lastToggleTime >= TOGGLE_INTERVAL_MS) {
+    if (currentTime - lastToggleTime >= ShooterConstants.WAVING_TOGGLE_INTERVAL_MS) {
       if (isLifted) {
         mShooterSubsystem.stowIntake();
       } else {

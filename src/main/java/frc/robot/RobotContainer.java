@@ -14,6 +14,7 @@ import frc.robot.commands.AutoShoot;
 import frc.robot.commands.Autos;
 import frc.robot.commands.LowerIntake;
 import frc.robot.commands.ResetIntake;
+import frc.robot.commands.WaveIntake;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -73,6 +74,8 @@ public class RobotContainer {
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.startFrontShooterMotor()));
     mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
     mController.y().onTrue(new ResetIntake(mShooterSubsystem));
+
+    mController.rightBumper().onTrue(new WaveIntake(mShooterSubsystem));
 
     // Operator capabilities for adjustments
     mOperator

@@ -44,24 +44,26 @@ public class Constants {
   }
 
   public static class ShooterConstants {
-    public static int kIntakeRollerPort = 0;
-    public static int kFrontShooterPort = 8;
-    public static int kRearShooterPort = 9;
-    public static int kIntakeLiftId = 7;
-    public static int kIntakeReceiverLeftID = 6;
-    public static int kIntakeReceiverRightID = 7;
+    public static final int kIntakeRollerPort = 0;
+    public static final int kFrontShooterPort = 8;
+    public static final int kRearShooterPort = 9;
+    public static final int kIntakeLiftId = 7;
+    public static final int kIntakeReceiverLeftID = 6;
+    public static final int kIntakeReceiverRightID = 7;
 
-    public static int kAngleLimitSwitchPort = 8;
+    public static final int kAngleLimitSwitchPort = 8;
 
-    public static double kIntakeLiftP = 0.1;
+    public static final double kIntakeLiftP = 0.1;
 
-    public static double kIntakeUpPosition = 0;
-    public static double kIntakeDownPosition = -50;
-    public static double kIntakeRollerSpeed = 1;
-    public static double kShooterSpeed = 1;
+    public static final double kIntakeUpPosition = 0;
+    public static final double kIntakeDownPosition = -50;
+    public static final double kIntakeRollerSpeed = 1;
+    public static final double kShooterSpeed = 1;
 
-    public static double kFrontShooterSpeed = 1;
-    public static double kRearShooterSpeed = 1;
+    public static final double kFrontShooterSpeed = 1;
+    public static final double kRearShooterSpeed = 1;
+
+    public static final long WAVING_TOGGLE_INTERVAL_MS = 1000;
   }
 
   public static class CameraConstants {
