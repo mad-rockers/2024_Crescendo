@@ -58,9 +58,10 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    mDriveSubsystem.setDefaultCommand(
-        mDriveSubsystem.run(
-            () -> mDriveSubsystem.arcadeDrive(mController.getLeftY(), mController.getRightX())));
+    // Temporarily removing the drive system
+    // mDriveSubsystem.setDefaultCommand(
+    //     mDriveSubsystem.run(
+    //         () -> mDriveSubsystem.arcadeDrive(mController.getLeftY(), mController.getRightX())));
 
     mShooterSubsystem.setDefaultCommand(
         mShooterSubsystem.run(() -> mShooterSubsystem.startFrontShooterMotor()));
@@ -74,24 +75,29 @@ public class RobotContainer {
     mController.x().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.stopAllMotors()));
     mController.y().onTrue(new ResetIntake(mShooterSubsystem));
 
-    // Operator capabilities for adjustments
-    mOperator
-        .leftTrigger()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
-    mOperator
-        .rightTrigger()
-        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
-
-    mOperator
-        .leftBumper()
+    // Using the driver controller's left and right joystick buttons for encoder settings
+    mController
+        .leftStick()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToNegativeFifty()));
-    mOperator
-        .rightBumper()
+    mController
+        .rightStick()
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
-  }
 
-  public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
-    // return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
-  }
+    // Use Start and Back buttons to raise and lower intake lift position
+    mController.start().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
+    mController.back().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
+
+    // Operator control system temporarily removed
+    // mOperator
+    //     .leftTrigger()
+    //     .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
+    // mOperator
+    //     .rightTrigger()
+    //     .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
+    }
+
+    public Command getAutonomousCommand() {
+        return m_chooser.getSelected();
+        // return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
+    }
 }
