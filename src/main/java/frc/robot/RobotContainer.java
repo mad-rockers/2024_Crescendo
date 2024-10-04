@@ -84,20 +84,26 @@ public class RobotContainer {
         .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.setEncoderToZero()));
 
     // Use Start and Back buttons to raise and lower intake lift position
-    mController.start().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
-    mController.back().onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
+    mController
+        .start()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
+    mController
+        .back()
+        .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
 
     // Operator control system temporarily removed
     // mOperator
     //     .leftTrigger()
-    //     .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.decrementIntakeLiftPosition()));
+    //     .onTrue(mShooterSubsystem.runOnce(() ->
+    // mShooterSubsystem.decrementIntakeLiftPosition()));
     // mOperator
     //     .rightTrigger()
-    //     .onTrue(mShooterSubsystem.runOnce(() -> mShooterSubsystem.incrementIntakeLiftPosition()));
-    }
+    //     .onTrue(mShooterSubsystem.runOnce(() ->
+    // mShooterSubsystem.incrementIntakeLiftPosition()));
+  }
 
-    public Command getAutonomousCommand() {
-        return m_chooser.getSelected();
-        // return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
-    }
+  public Command getAutonomousCommand() {
+    return m_chooser.getSelected();
+    // return Autos.shootMoveGrabMoveShoot(mShooterSubsystem, mDriveSubsystem);
+  }
 }
